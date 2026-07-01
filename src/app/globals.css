@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #000000;
+  --color-panel: #0d0d0d;
+  --color-panel-2: #0e0e0e;
+  --color-accent: #d9ff00;
+  --color-accent-dim: #363d0a;
+  --font-sans: var(--font-sora);
+  --font-display: var(--font-koho);
+  --animate-fade-in: fade-in 0.5s ease both;
+  --animate-rise: rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-bg);
+  color: #ffffff;
+}
+
+* {
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+  scrollbar-width: thin;
+}
+
+/* Custom range slider */
+input[type="range"].solve-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+  margin: 0;
+}
+
+input[type="range"].solve-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 18px;
+  border-radius: 4px;
+  background: var(--color-accent);
+  cursor: pointer;
+  box-shadow: 0 0 0 4px rgba(217, 255, 0, 0.15);
+  transition: transform 0.15s ease;
+}
+
+input[type="range"].solve-slider::-webkit-slider-thumb:active {
+  transform: scale(1.15);
+}
+
+input[type="range"].solve-slider::-moz-range-thumb {
+  width: 12px;
+  height: 18px;
+  border: none;
+  border-radius: 4px;
+  background: var(--color-accent);
+  cursor: pointer;
+  box-shadow: 0 0 0 4px rgba(217, 255, 0, 0.15);
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}

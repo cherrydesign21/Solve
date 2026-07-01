@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm ls *)",
+      "Bash(git --version)",
+      "Bash(echo \"exit code: $?\")",
+      "Bash(git config *)",
+      "Bash(git init *)"
+    ]
+  }
+}

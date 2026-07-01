@@ -1,0 +1,132 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { ToolHeader } from "@/components/ui/ToolHeader";
+import { Tabs } from "@/components/ui/Tabs";
+import { SliderField } from "@/components/ui/SliderField";
+import { ResultCard } from "@/components/ui/ResultCard";
+import { DonutChart, DonutLegend } from "@/components/ui/DonutChart";
+import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
+import { Card } from "@/components/ui/Card";
+import { formatIndianCurrency, humanizeAmountCaption } from "@/lib/format";
+import { getToolBySlug } from "@/lib/tools-registry";
+import { calculateLumpsum, calculateSip, type SipMode } from "./logic";
+
+const modeOptions: { value: SipMode; label: string }[] = [
+  { value: "sip", label: "Monthly SIP" },
+  { value: "lumpsum", label: "Lumpsum" },
+];
+
+export default function SipCalculator() {
+  const tool = getToolBySlug("sip-calculator")!;
+  const [mode, setMode] = useState<SipMode>("sip");
+
+  const [monthlyAmount, setMonthlyAmount] = useState(5_000);
+  const [lumpsumAmount, setLumpsumAmount] = useState(1_00_000);
+  const [rate, setRate] = useState(12);
+  const [years, setYears] = useState(10);
+
+  const result = useMemo(() => {
+    return mode === "sip"
+      ? calculateSip(monthlyAmount, rate, years)
+      : calculateLumpsum(lumpsumAmount, rate, years);
+  }, [mode, monthlyAmount, lumpsumAmount, rate, years]);
+
+  return (
+    <div>
+      <ToolHeader icon={tool.icon} title={tool.name} description={tool.description} />
+
+      <Card className="p-5 sm:p-8 lg:p-10">
+        <div className="flex flex-col gap-10 lg:gap-12">
+          <Tabs options={modeOptions} value={mode} onChange={setMode} />
+
+          <div className="flex flex-col gap-8 sm:gap-10">
+            {mode === "sip" ? (
+              <SliderField
+                label="Monthly Investment"
+                value={monthlyAmount}
+                min={500}
+                max={2_00_000}
+                step={500}
+                onChange={setMonthlyAmount}
+                prefix="₹"
+                minCaption={humanizeAmountCaption(500)}
+                maxCaption={humanizeAmountCaption(2_00_000)}
+              />
+            ) : (
+              <SliderField
+                label="Total Investment"
+                value={lumpsumAmount}
+                min={10_000}
+                max={50_00_000}
+                step={5_000}
+                onChange={setLumpsumAmount}
+                prefix="₹"
+                minCaption={humanizeAmountCaption(10_000)}
+                maxCaption={humanizeAmountCaption(50_00_000)}
+              />
+            )}
+            <SliderField
+              label="Expected Return Rate (p.a)"
+              value={rate}
+              min={1}
+              max={30}
+              step={0.1}
+              decimals={1}
+              onChange={setRate}
+              suffix="%"
+              minCaption="1%"
+              maxCaption="30%"
+            />
+            <SliderField
+              label="Time Period (Years)"
+              value={years}
+              min={1}
+              max={40}
+              step={1}
+              onChange={setYears}
+              suffix="Y"
+              minCaption="1 Y"
+              maxCaption="40 Y"
+            />
+          </div>
+
+          <div className="flex flex-col items-center gap-10 lg:flex-row lg:items-stretch lg:justify-between">
+            <ResultCard
+              className="w-full lg:max-w-[420px]"
+              heading="Total Value"
+              value={<AnimatedNumber value={result.total} format={(v) => formatIndianCurrency(v)} />}
+              rows={[
+                { label: "Invested Amount", value: formatIndianCurrency(result.invested) },
+                { label: "Estimated Returns", value: formatIndianCurrency(result.returns) },
+                { label: "Total Value", value: formatIndianCurrency(result.total) },
+              ]}
+            />
+
+            <div className="flex flex-col items-center gap-6">
+              <DonutChart
+                segments={[
+                  { value: result.invested, color: "#363d0a" },
+                  { value: result.returns, color: "#d9ff00" },
+                ]}
+              >
+                <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/60">
+                  Total Value
+                </p>
+                <p className="mt-1.5 text-xl font-semibold text-white sm:text-2xl">
+                  <AnimatedNumber value={result.total} format={(v) => formatIndianCurrency(v)} />
+                </p>
+              </DonutChart>
+              <DonutLegend
+                items={[
+                  { label: "Invested Amount", color: "#363d0a" },
+                  { label: "Est. Returns", color: "#d9ff00" },
+                ]}
+              />
+            </div>
+          </div>
+        </div>
+      </Card>
+    </div>
+  );
+}
