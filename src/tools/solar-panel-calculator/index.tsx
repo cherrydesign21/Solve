@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import { Wallet, CalendarClock, Leaf } from "lucide-react";
 import { ToolHeader } from "@/components/ui/ToolHeader";
+import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
+import { toolBackdrops } from "@/lib/tool-backdrops";
 import { SliderField } from "@/components/ui/SliderField";
 import { MoneySliderField } from "@/components/ui/MoneySliderField";
 import { Tabs } from "@/components/ui/Tabs";
@@ -45,7 +47,8 @@ export default function SolarPanelCalculator() {
   );
 
   return (
-    <div>
+    <div className="relative">
+      <ToolBackdrop icons={toolBackdrops[tool.slug] ?? []} />
       <ToolHeader icon={tool.icon} title={tool.name} description={tool.description} />
 
       <Card className="p-5 sm:p-8 lg:p-10">

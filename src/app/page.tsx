@@ -2,10 +2,13 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { tools } from "@/lib/tools-registry";
 import { Card } from "@/components/ui/Card";
+import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
+import { toolBackdrops } from "@/lib/tool-backdrops";
 
 export default function HomePage() {
   return (
-    <div>
+    <div className="relative">
+      <ToolBackdrop icons={toolBackdrops.home ?? []} />
       <div className="mb-10 max-w-2xl sm:mb-14">
         <p className="mb-4 inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-accent">
           Multi-utility toolkit

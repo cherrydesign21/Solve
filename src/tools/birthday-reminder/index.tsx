@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus, Trash2, PartyPopper, Cake, Mail, AlertTriangle } from "lucide-react";
 import { ToolHeader } from "@/components/ui/ToolHeader";
+import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
+import { toolBackdrops } from "@/lib/tool-backdrops";
 import { Card } from "@/components/ui/Card";
 import { TextField } from "@/components/ui/TextField";
 import { getToolBySlug } from "@/lib/tools-registry";
@@ -99,7 +101,8 @@ export default function BirthdayReminder() {
   };
 
   return (
-    <div>
+    <div className="relative">
+      <ToolBackdrop icons={toolBackdrops[tool.slug] ?? []} />
       <ToolHeader icon={tool.icon} title={tool.name} description={tool.description} />
 
       <div className="flex flex-col gap-6">

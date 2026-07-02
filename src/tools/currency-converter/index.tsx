@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { ArrowLeftRight, Pencil, RefreshCw, WifiOff } from "lucide-react";
 import { ToolHeader } from "@/components/ui/ToolHeader";
+import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
+import { toolBackdrops } from "@/lib/tool-backdrops";
 import { Card } from "@/components/ui/Card";
 import { SelectField } from "@/components/ui/SelectField";
 import { NumberField } from "@/components/ui/NumberField";
@@ -85,7 +87,8 @@ export default function CurrencyConverter() {
   }));
 
   return (
-    <div>
+    <div className="relative">
+      <ToolBackdrop icons={toolBackdrops[tool.slug] ?? []} />
       <ToolHeader icon={tool.icon} title={tool.name} description={tool.description} />
 
       <Card className="p-5 sm:p-8 lg:p-10">

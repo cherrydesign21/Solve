@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ToolHeader } from "@/components/ui/ToolHeader";
+import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
+import { toolBackdrops } from "@/lib/tool-backdrops";
 import { Tabs } from "@/components/ui/Tabs";
 import { MoneySliderField } from "@/components/ui/MoneySliderField";
 import { ResultCard } from "@/components/ui/ResultCard";
@@ -39,7 +41,8 @@ export default function TaxCalculator() {
   );
 
   return (
-    <div>
+    <div className="relative">
+      <ToolBackdrop icons={toolBackdrops[tool.slug] ?? []} />
       <ToolHeader icon={tool.icon} title={tool.name} description={tool.description} />
 
       <p className="mb-6 -mt-4 max-w-xl text-xs text-white/40 sm:text-sm">

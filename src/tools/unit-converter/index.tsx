@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeftRight } from "lucide-react";
+import { ArrowLeftRight, Pencil } from "lucide-react";
 import clsx from "clsx";
 import { ToolHeader } from "@/components/ui/ToolHeader";
+import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
+import { toolBackdrops } from "@/lib/tool-backdrops";
 import { Card } from "@/components/ui/Card";
 import { SelectField } from "@/components/ui/SelectField";
 import { NumberField } from "@/components/ui/NumberField";
@@ -42,7 +44,8 @@ export default function UnitConverter() {
   const unitOptions = category.units.map((u) => ({ value: u.id, label: u.label }));
 
   return (
-    <div>
+    <div className="relative">
+      <ToolBackdrop icons={toolBackdrops[tool.slug] ?? []} />
       <ToolHeader icon={tool.icon} title={tool.name} description={tool.description} />
 
       <Card className="p-5 sm:p-8 lg:p-10">
@@ -68,14 +71,20 @@ export default function UnitConverter() {
 
           <div className="flex flex-col items-stretch gap-4 lg:flex-row lg:items-center lg:gap-6">
             <div className="flex flex-1 flex-col gap-3 rounded-xl border border-white/10 bg-white/[0.04] p-5 sm:p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/50">From</p>
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/50">From</p>
+                <p className="flex items-center gap-1 text-[11px] text-white/30">
+                  <Pencil className="h-3 w-3" /> Enter a value
+                </p>
+              </div>
               <SelectField options={unitOptions} value={fromId} onChange={setFromId} ariaLabel="From unit" />
               <NumberField
                 value={fromValue}
                 onChange={setFromValue}
                 decimals={smartDecimals(fromValue)}
                 ariaLabel="From value"
-                className="!bg-transparent !border-0 !px-0 !py-1"
+                className="!border-0 !bg-transparent !px-0 !py-1 focus-within:ring-1 focus-within:ring-accent/40 rounded-md"
+                inputClassName="text-2xl sm:text-3xl font-semibold"
               />
             </div>
 
@@ -91,14 +100,20 @@ export default function UnitConverter() {
             </button>
 
             <div className="flex flex-1 flex-col gap-3 rounded-xl border border-accent/30 bg-accent/[0.06] p-5 sm:p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent/80">To</p>
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent/80">To</p>
+                <p className="flex items-center gap-1 text-[11px] text-white/30">
+                  <Pencil className="h-3 w-3" /> Also editable
+                </p>
+              </div>
               <SelectField options={unitOptions} value={toId} onChange={setToId} ariaLabel="To unit" />
               <NumberField
                 value={toValue}
                 onChange={handleToChange}
                 decimals={smartDecimals(toValue)}
                 ariaLabel="To value"
-                className="!bg-transparent !border-0 !px-0 !py-1"
+                className="!border-0 !bg-transparent !px-0 !py-1 focus-within:ring-1 focus-within:ring-accent/40 rounded-md"
+                inputClassName="text-2xl sm:text-3xl font-semibold"
               />
             </div>
           </div>
