@@ -1,8 +1,9 @@
 export const CURRENCY_NAMES: Record<string, string> = {
   USD: "US Dollar",
-  EUR: "Euro",
-  GBP: "British Pound",
   INR: "Indian Rupee",
+  GBP: "British Pound",
+  RUB: "Russian Ruble",
+  EUR: "Euro",
   JPY: "Japanese Yen",
   AUD: "Australian Dollar",
   CAD: "Canadian Dollar",
@@ -20,9 +21,10 @@ export const CURRENCY_NAMES: Record<string, string> = {
 export const FALLBACK_BASE = "USD";
 export const FALLBACK_RATES: Record<string, number> = {
   USD: 1,
-  EUR: 0.92,
-  GBP: 0.79,
   INR: 85.5,
+  GBP: 0.79,
+  RUB: 83.7,
+  EUR: 0.92,
   JPY: 148.5,
   AUD: 1.53,
   CAD: 1.37,

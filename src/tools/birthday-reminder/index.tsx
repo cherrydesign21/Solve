@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus, Trash2, PartyPopper, Cake } from "lucide-react";
+import { Plus, Trash2, PartyPopper, Cake, Mail, AlertTriangle } from "lucide-react";
 import { ToolHeader } from "@/components/ui/ToolHeader";
 import { Card } from "@/components/ui/Card";
 import { TextField } from "@/components/ui/TextField";
@@ -10,38 +10,42 @@ import { getToolBySlug } from "@/lib/tools-registry";
 import type { BirthdayEntry } from "./types";
 import { computeBirthday, describeCountdown, formatDob, sortByUpcoming } from "./logic";
 
-const STORAGE_KEY = "solve.birthdayReminder.v1";
-
-function loadEntries(): BirthdayEntry[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as BirthdayEntry[]) : [];
-  } catch {
-    return [];
-  }
+interface ApiError {
+  error: string;
 }
 
 export default function BirthdayReminder() {
   const tool = getToolBySlug("birthday-reminder")!;
   const [entries, setEntries] = useState<BirthdayEntry[]>([]);
-  const [hydrated, setHydrated] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
   const [name, setName] = useState("");
   const [dob, setDob] = useState("");
+  const [email, setEmail] = useState("");
   const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
-    // localStorage is only available client-side; reading it post-mount (rather than in
-    // the useState initializer) keeps the server-rendered and first client render identical.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setEntries(loadEntries());
-    setHydrated(true);
+    let cancelled = false;
+    async function load() {
+      try {
+        const res = await fetch("/api/birthdays");
+        const data = (await res.json()) as { birthdays?: BirthdayEntry[] } & Partial<ApiError>;
+        if (!res.ok) throw new Error(data.error ?? "Failed to load birthdays.");
+        if (!cancelled) setEntries(data.birthdays ?? []);
+      } catch (error) {
+        if (!cancelled) setLoadError(error instanceof Error ? error.message : "Failed to load birthdays.");
+      } finally {
+        if (!cancelled) setLoaded(true);
+      }
+    }
+    load();
+    return () => {
+      cancelled = true;
+    };
   }, []);
-
-  useEffect(() => {
-    if (!hydrated) return;
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-  }, [entries, hydrated]);
 
   useEffect(() => {
     const interval = window.setInterval(() => setNow(new Date()), 60_000);
@@ -57,22 +61,41 @@ export default function BirthdayReminder() {
     return computeBirthday({ id: "preview", name: name.trim(), dob }, now);
   }, [name, dob, now]);
 
-  const canAdd = Boolean(name.trim() && dob);
+  const canAdd = Boolean(name.trim() && dob && email.trim()) && !submitting;
 
-  const addEntry = () => {
+  const addEntry = async () => {
     if (!canAdd) return;
-    const entry: BirthdayEntry = {
-      id: typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `${Date.now()}`,
-      name: name.trim(),
-      dob,
-    };
-    setEntries((prev) => [...prev, entry]);
-    setName("");
-    setDob("");
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      const res = await fetch("/api/birthdays", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name.trim(), dob, email: email.trim() }),
+      });
+      const data = (await res.json()) as BirthdayEntry & Partial<ApiError>;
+      if (!res.ok) throw new Error(data.error ?? "Failed to add birthday.");
+      setEntries((prev) => [...prev, { id: data.id, name: data.name, dob: data.dob }]);
+      setName("");
+      setDob("");
+      setEmail("");
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "Failed to add birthday.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  const removeEntry = (id: string) => {
+  const removeEntry = async (id: string) => {
+    const previous = entries;
     setEntries((prev) => prev.filter((entry) => entry.id !== id));
+    try {
+      const res = await fetch(`/api/birthdays/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to remove birthday.");
+    } catch (error) {
+      setEntries(previous);
+      setSubmitError(error instanceof Error ? error.message : "Failed to remove birthday.");
+    }
   };
 
   return (
@@ -81,14 +104,18 @@ export default function BirthdayReminder() {
 
       <div className="flex flex-col gap-6">
         <Card className="p-5 sm:p-8">
-          <p className="mb-4 text-base font-medium text-white sm:text-lg">Add a birthday</p>
-          <div className="flex flex-col gap-3 sm:flex-row">
+          <p className="mb-1 text-base font-medium text-white sm:text-lg">Add a birthday</p>
+          <p className="mb-4 text-xs text-white/40">
+            We&apos;ll email a reminder 4 hours before. Names and dates below are visible to anyone on this
+            page; email addresses are stored privately and never shown.
+          </p>
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <TextField
               value={name}
               onChange={setName}
               placeholder="Name"
               aria-label="Name"
-              className="sm:flex-1"
+              className="sm:flex-1 sm:min-w-[160px]"
               onKeyDown={(e) => e.key === "Enter" && addEntry()}
             />
             <TextField
@@ -97,6 +124,15 @@ export default function BirthdayReminder() {
               onChange={setDob}
               aria-label="Date of birth"
               className="sm:w-56"
+              onKeyDown={(e) => e.key === "Enter" && addEntry()}
+            />
+            <TextField
+              type="email"
+              value={email}
+              onChange={setEmail}
+              placeholder="Email for reminder"
+              aria-label="Reminder email"
+              className="sm:flex-1 sm:min-w-[200px]"
               onKeyDown={(e) => e.key === "Enter" && addEntry()}
             />
             <button
@@ -122,7 +158,23 @@ export default function BirthdayReminder() {
               </motion.p>
             )}
           </AnimatePresence>
+          {submitError && (
+            <p className="mt-3 flex items-center gap-2 text-sm text-red-400">
+              <AlertTriangle className="h-4 w-4 shrink-0" />
+              {submitError}
+            </p>
+          )}
         </Card>
+
+        {loadError && (
+          <Card className="flex items-start gap-3 border-red-500/30 bg-red-500/5 p-5">
+            <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-red-400" />
+            <div>
+              <p className="text-sm font-medium text-red-300">Birthdays aren&apos;t loading</p>
+              <p className="mt-1 text-sm text-white/50">{loadError}</p>
+            </div>
+          </Card>
+        )}
 
         {spotlight && (
           <Card className="overflow-hidden p-0">
@@ -193,12 +245,17 @@ export default function BirthdayReminder() {
           </Card>
         )}
 
-        {hydrated && upcoming.length === 0 && (
+        {loaded && !loadError && upcoming.length === 0 && (
           <Card className="flex flex-col items-center gap-3 px-6 py-16 text-center">
             <Cake className="h-9 w-9 text-white/30" />
             <p className="text-white/50">No birthdays saved yet. Add one above to start tracking.</p>
           </Card>
         )}
+
+        <p className="flex items-center gap-2 text-xs text-white/30">
+          <Mail className="h-3.5 w-3.5" />
+          Reminder emails require RESEND_API_KEY and DATABASE_URL to be configured on the server.
+        </p>
       </div>
     </div>
   );

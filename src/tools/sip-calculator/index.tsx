@@ -4,11 +4,13 @@ import { useMemo, useState } from "react";
 import { ToolHeader } from "@/components/ui/ToolHeader";
 import { Tabs } from "@/components/ui/Tabs";
 import { SliderField } from "@/components/ui/SliderField";
+import { MoneySliderField } from "@/components/ui/MoneySliderField";
 import { ResultCard } from "@/components/ui/ResultCard";
 import { DonutChart, DonutLegend } from "@/components/ui/DonutChart";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
-import { formatIndianCurrency, humanizeAmountCaption } from "@/lib/format";
+import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { useCurrency } from "@/lib/currency-context";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { calculateLumpsum, calculateSip, type SipMode } from "./logic";
 
@@ -19,6 +21,7 @@ const modeOptions: { value: SipMode; label: string }[] = [
 
 export default function SipCalculator() {
   const tool = getToolBySlug("sip-calculator")!;
+  const currency = useCurrency();
   const [mode, setMode] = useState<SipMode>("sip");
 
   const [monthlyAmount, setMonthlyAmount] = useState(5_000);
@@ -37,69 +40,64 @@ export default function SipCalculator() {
       <ToolHeader icon={tool.icon} title={tool.name} description={tool.description} />
 
       <Card className="p-5 sm:p-8 lg:p-10">
-        <div className="flex flex-col gap-10 lg:gap-12">
-          <Tabs options={modeOptions} value={mode} onChange={setMode} />
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12">
+          <div className="flex flex-col gap-10 lg:gap-12">
+            <Tabs options={modeOptions} value={mode} onChange={setMode} />
 
-          <div className="flex flex-col gap-8 sm:gap-10">
-            {mode === "sip" ? (
+            <div className="flex flex-col gap-8 sm:gap-10">
+              {mode === "sip" ? (
+                <MoneySliderField
+                  label="Monthly Investment"
+                  valueInr={monthlyAmount}
+                  minInr={500}
+                  maxInr={2_00_000}
+                  stepInr={500}
+                  onChangeInr={setMonthlyAmount}
+                />
+              ) : (
+                <MoneySliderField
+                  label="Total Investment"
+                  valueInr={lumpsumAmount}
+                  minInr={10_000}
+                  maxInr={50_00_000}
+                  stepInr={5_000}
+                  onChangeInr={setLumpsumAmount}
+                />
+              )}
               <SliderField
-                label="Monthly Investment"
-                value={monthlyAmount}
-                min={500}
-                max={2_00_000}
-                step={500}
-                onChange={setMonthlyAmount}
-                prefix="₹"
-                minCaption={humanizeAmountCaption(500)}
-                maxCaption={humanizeAmountCaption(2_00_000)}
+                label="Expected Return Rate (p.a)"
+                value={rate}
+                min={1}
+                max={30}
+                step={0.1}
+                decimals={1}
+                onChange={setRate}
+                suffix="%"
+                minCaption="1%"
+                maxCaption="30%"
               />
-            ) : (
               <SliderField
-                label="Total Investment"
-                value={lumpsumAmount}
-                min={10_000}
-                max={50_00_000}
-                step={5_000}
-                onChange={setLumpsumAmount}
-                prefix="₹"
-                minCaption={humanizeAmountCaption(10_000)}
-                maxCaption={humanizeAmountCaption(50_00_000)}
+                label="Time Period (Years)"
+                value={years}
+                min={1}
+                max={40}
+                step={1}
+                onChange={setYears}
+                suffix="Y"
+                minCaption="1 Y"
+                maxCaption="40 Y"
               />
-            )}
-            <SliderField
-              label="Expected Return Rate (p.a)"
-              value={rate}
-              min={1}
-              max={30}
-              step={0.1}
-              decimals={1}
-              onChange={setRate}
-              suffix="%"
-              minCaption="1%"
-              maxCaption="30%"
-            />
-            <SliderField
-              label="Time Period (Years)"
-              value={years}
-              min={1}
-              max={40}
-              step={1}
-              onChange={setYears}
-              suffix="Y"
-              minCaption="1 Y"
-              maxCaption="40 Y"
-            />
+            </div>
           </div>
 
-          <div className="flex flex-col items-center gap-10 lg:flex-row lg:items-stretch lg:justify-between">
+          <div className="flex flex-col gap-8 lg:sticky lg:top-24 lg:self-start">
             <ResultCard
-              className="w-full lg:max-w-[420px]"
               heading="Total Value"
-              value={<AnimatedNumber value={result.total} format={(v) => formatIndianCurrency(v)} />}
+              value={<AnimatedNumber value={result.total} format={(v) => currency.format(v)} />}
               rows={[
-                { label: "Invested Amount", value: formatIndianCurrency(result.invested) },
-                { label: "Estimated Returns", value: formatIndianCurrency(result.returns) },
-                { label: "Total Value", value: formatIndianCurrency(result.total) },
+                { label: "Invested Amount", value: currency.format(result.invested) },
+                { label: "Estimated Returns", value: currency.format(result.returns) },
+                { label: "Total Value", value: currency.format(result.total) },
               ]}
             />
 
@@ -114,7 +112,7 @@ export default function SipCalculator() {
                   Total Value
                 </p>
                 <p className="mt-1.5 text-xl font-semibold text-white sm:text-2xl">
-                  <AnimatedNumber value={result.total} format={(v) => formatIndianCurrency(v)} />
+                  <AnimatedNumber value={result.total} format={(v) => currency.format(v)} />
                 </p>
               </DonutChart>
               <DonutLegend
@@ -124,6 +122,8 @@ export default function SipCalculator() {
                 ]}
               />
             </div>
+
+            <VerticalAdSlot />
           </div>
         </div>
       </Card>

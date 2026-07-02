@@ -8,6 +8,7 @@ import { Menu, X } from "lucide-react";
 import clsx from "clsx";
 import { tools } from "@/lib/tools-registry";
 import { Logo } from "./Logo";
+import { CurrencySelector } from "./CurrencySelector";
 
 function NavList({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
@@ -73,6 +74,9 @@ export function Navigation() {
         <div className="flex items-center px-8 py-8">
           <Logo />
         </div>
+        <div className="px-6 pb-6">
+          <CurrencySelector />
+        </div>
         <div className="flex-1 overflow-y-auto px-4 pb-8">
           <NavList />
         </div>
@@ -119,6 +123,9 @@ export function Navigation() {
                 >
                   <X className="h-4 w-4" />
                 </button>
+              </div>
+              <div className="px-4 pb-6">
+                <CurrencySelector />
               </div>
               <NavList onNavigate={() => setOpen(false)} />
             </motion.div>

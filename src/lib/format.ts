@@ -40,20 +40,36 @@ export function formatCurrency(
   }
 }
 
-export function humanizeAmountCaption(value: number): string {
-  if (value >= 1_00_00_000) {
-    const v = value / 1_00_00_000;
-    return `${Number.isInteger(v) ? v : v.toFixed(1)} Cr`;
+export function humanizeAmountCaption(value: number, currency: string = "INR"): string {
+  if (currency === "INR") {
+    if (value >= 1_00_00_000) {
+      const v = value / 1_00_00_000;
+      return `${Number.isInteger(v) ? v : v.toFixed(1)} Cr`;
+    }
+    if (value >= 1_00_000) {
+      const v = value / 1_00_000;
+      return `${Number.isInteger(v) ? v : v.toFixed(1)} Lac`;
+    }
+    if (value >= 1_000) {
+      const v = value / 1_000;
+      return `${Number.isInteger(v) ? v : v.toFixed(1)}K`;
+    }
+    return formatNumber(value);
   }
-  if (value >= 1_00_000) {
-    const v = value / 1_00_000;
-    return `${Number.isInteger(v) ? v : v.toFixed(1)} Lac`;
+
+  if (value >= 1_000_000_000) {
+    const v = value / 1_000_000_000;
+    return `${Number.isInteger(v) ? v : v.toFixed(1)}B`;
+  }
+  if (value >= 1_000_000) {
+    const v = value / 1_000_000;
+    return `${Number.isInteger(v) ? v : v.toFixed(1)}M`;
   }
   if (value >= 1_000) {
     const v = value / 1_000;
     return `${Number.isInteger(v) ? v : v.toFixed(1)}K`;
   }
-  return formatNumber(value);
+  return formatNumber(value, value % 1 === 0 ? 0 : 2);
 }
 
 export function humanizeIndianAmount(value: number): string {

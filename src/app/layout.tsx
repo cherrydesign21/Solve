@@ -4,6 +4,8 @@ import "./globals.css";
 import { Navigation } from "@/components/layout/Navigation";
 import { GlowBackground } from "@/components/layout/GlowBackground";
 import { PageTransition } from "@/components/layout/PageTransition";
+import { CurrencyProvider } from "@/lib/currency-context";
+import { HorizontalAdSlot } from "@/components/ui/AdSlot";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -38,15 +40,18 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${sora.variable} ${koho.variable} h-full antialiased`}>
       <body className="min-h-full bg-bg font-sans text-white">
-        <div className="relative flex min-h-screen w-full flex-col lg:flex-row">
-          <GlowBackground />
-          <Navigation />
-          <main className="relative z-10 min-w-0 flex-1">
-            <div className="mx-auto w-full max-w-[1400px] px-4 py-6 sm:px-8 sm:py-10 lg:px-12 lg:py-12">
-              <PageTransition>{children}</PageTransition>
-            </div>
-          </main>
-        </div>
+        <CurrencyProvider>
+          <div className="relative flex min-h-screen w-full flex-col lg:flex-row">
+            <GlowBackground />
+            <Navigation />
+            <main className="relative z-10 min-w-0 flex-1">
+              <div className="mx-auto w-full max-w-[1400px] px-4 py-6 sm:px-8 sm:py-10 lg:px-12 lg:py-12">
+                <PageTransition>{children}</PageTransition>
+                <HorizontalAdSlot className="mt-10" />
+              </div>
+            </main>
+          </div>
+        </CurrencyProvider>
       </body>
     </html>
   );

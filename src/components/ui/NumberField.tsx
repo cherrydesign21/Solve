@@ -12,6 +12,7 @@ interface NumberFieldProps {
   max?: number;
   decimals?: number;
   className?: string;
+  inputClassName?: string;
   ariaLabel?: string;
 }
 
@@ -24,6 +25,7 @@ export function NumberField({
   max = Infinity,
   decimals = 0,
   className = "",
+  inputClassName = "text-sm sm:text-base",
   ariaLabel,
 }: NumberFieldProps) {
   const [isFocused, setIsFocused] = useState(false);
@@ -72,7 +74,7 @@ export function NumberField({
         onChange={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        className="w-full min-w-0 bg-transparent text-right text-sm sm:text-base font-medium text-white outline-none tabular-nums"
+        className={`w-full min-w-0 cursor-text bg-transparent text-right font-medium text-white outline-none tabular-nums ${inputClassName}`}
       />
       {suffix && <span className="shrink-0 text-xs sm:text-sm tracking-wide text-white/50">{suffix}</span>}
     </div>

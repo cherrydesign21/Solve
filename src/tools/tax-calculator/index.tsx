@@ -4,12 +4,13 @@ import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ToolHeader } from "@/components/ui/ToolHeader";
 import { Tabs } from "@/components/ui/Tabs";
-import { SliderField } from "@/components/ui/SliderField";
+import { MoneySliderField } from "@/components/ui/MoneySliderField";
 import { ResultCard } from "@/components/ui/ResultCard";
 import { DonutChart, DonutLegend } from "@/components/ui/DonutChart";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
-import { formatIndianCurrency, humanizeAmountCaption } from "@/lib/format";
+import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { useCurrency } from "@/lib/currency-context";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { calculateTax, type TaxRegime } from "./logic";
 
@@ -20,6 +21,7 @@ const regimeOptions: { value: TaxRegime; label: string }[] = [
 
 export default function TaxCalculator() {
   const tool = getToolBySlug("tax-calculator")!;
+  const currency = useCurrency();
   const [regime, setRegime] = useState<TaxRegime>("new");
   const [income, setIncome] = useState(12_00_000);
   const [deductions80c, setDeductions80c] = useState(1_50_000);
@@ -40,69 +42,66 @@ export default function TaxCalculator() {
     <div>
       <ToolHeader icon={tool.icon} title={tool.name} description={tool.description} />
 
+      <p className="mb-6 -mt-4 max-w-xl text-xs text-white/40 sm:text-sm">
+        Tax law and slabs shown are for India (old/new regime); amounts are just displayed in your chosen
+        currency at the live exchange rate.
+      </p>
+
       <Card className="p-5 sm:p-8 lg:p-10">
-        <div className="flex flex-col gap-10 lg:gap-12">
-          <Tabs options={regimeOptions} value={regime} onChange={setRegime} />
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12">
+          <div className="flex flex-col gap-10 lg:gap-12">
+            <Tabs options={regimeOptions} value={regime} onChange={setRegime} />
 
-          <div className="flex flex-col gap-8 sm:gap-10">
-            <SliderField
-              label="Annual Income"
-              value={income}
-              min={2_00_000}
-              max={1_00_00_000}
-              step={10_000}
-              onChange={setIncome}
-              prefix="₹"
-              minCaption={humanizeAmountCaption(2_00_000)}
-              maxCaption={humanizeAmountCaption(1_00_00_000)}
-            />
+            <div className="flex flex-col gap-8 sm:gap-10">
+              <MoneySliderField
+                label="Annual Income"
+                valueInr={income}
+                minInr={2_00_000}
+                maxInr={1_00_00_000}
+                stepInr={10_000}
+                onChangeInr={setIncome}
+              />
 
-            <AnimatePresence initial={false}>
-              {regime === "old" && (
-                <motion.div
-                  key="old-regime-deductions"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex flex-col gap-8 overflow-hidden sm:gap-10"
-                >
-                  <SliderField
-                    label="Section 80C Investments"
-                    value={deductions80c}
-                    min={0}
-                    max={1_50_000}
-                    step={5_000}
-                    onChange={setDeductions80c}
-                    prefix="₹"
-                    minCaption="₹0"
-                    maxCaption={humanizeAmountCaption(1_50_000)}
-                  />
-                  <SliderField
-                    label="Other Deductions (80D, HRA, home loan interest)"
-                    value={otherDeductions}
-                    min={0}
-                    max={5_00_000}
-                    step={5_000}
-                    onChange={setOtherDeductions}
-                    prefix="₹"
-                    minCaption="₹0"
-                    maxCaption={humanizeAmountCaption(5_00_000)}
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
+              <AnimatePresence initial={false}>
+                {regime === "old" && (
+                  <motion.div
+                    key="old-regime-deductions"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    className="flex flex-col gap-8 overflow-hidden sm:gap-10"
+                  >
+                    <MoneySliderField
+                      label="Section 80C Investments"
+                      valueInr={deductions80c}
+                      minInr={0}
+                      maxInr={1_50_000}
+                      stepInr={5_000}
+                      onChangeInr={setDeductions80c}
+                    />
+                    <MoneySliderField
+                      label="Other Deductions (80D, HRA, home loan interest)"
+                      valueInr={otherDeductions}
+                      minInr={0}
+                      maxInr={5_00_000}
+                      stepInr={5_000}
+                      onChangeInr={setOtherDeductions}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
 
-          <div className="flex flex-col items-center gap-10 lg:flex-row lg:items-stretch lg:justify-between">
+          <div className="flex flex-col gap-8 lg:sticky lg:top-24 lg:self-start">
             <ResultCard
-              className="w-full lg:max-w-[420px]"
               heading="Total Tax Payable"
-              value={<AnimatedNumber value={result.totalTax} format={(v) => formatIndianCurrency(v)} />}
+              value={<AnimatedNumber value={result.totalTax} format={(v) => currency.format(v)} />}
               rows={[
-                { label: "Taxable Income", value: formatIndianCurrency(result.taxableIncome) },
-                { label: "Health & Education Cess (4%)", value: formatIndianCurrency(result.cess) },
-                { label: "Take-home Income", value: formatIndianCurrency(result.takeHome) },
+                { label: "Taxable Income", value: currency.format(result.taxableIncome) },
+                { label: "Health & Education Cess (4%)", value: currency.format(result.cess) },
+                { label: "Take-home Income", value: currency.format(result.takeHome) },
               ]}
             />
 
@@ -127,6 +126,8 @@ export default function TaxCalculator() {
                 ]}
               />
             </div>
+
+            <VerticalAdSlot />
           </div>
         </div>
       </Card>
