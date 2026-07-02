@@ -1,17 +1,21 @@
-import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
+import postgres from "postgres";
 
-let client: NeonQueryFunction<false, false> | null = null;
+let client: postgres.Sql | null = null;
 
-export function getSql(): NeonQueryFunction<false, false> {
+export function getSql(): postgres.Sql {
   if (client) return client;
   const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL;
   if (!connectionString) {
     throw new Error(
-      "Missing DATABASE_URL. Add a Postgres database (Vercel Storage → Neon) to your project, or set " +
-        "DATABASE_URL manually, to enable birthday reminders."
+      "Missing DATABASE_URL. Add your Supabase (or other Postgres) connection string in Vercel's " +
+        "Environment Variables to enable birthday reminders."
     );
   }
-  client = neon(connectionString);
+  client = postgres(connectionString, {
+    ssl: "require",
+    prepare: false, // required for Supabase's pgbouncer transaction-mode pooler
+    max: 1, // one connection per serverless instance; the pooler handles fan-out
+  });
   return client;
 }
 
