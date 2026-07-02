@@ -192,9 +192,19 @@ export default function BirthdayReminder() {
                 <p className="text-lg font-semibold text-white sm:text-xl">{spotlight.name}</p>
                 <p className="mt-1 text-sm text-white/50">{formatDob(spotlight.dob)}</p>
               </div>
-              <p className="text-sm font-medium uppercase tracking-wide text-white/60">
-                Turning <span className="text-2xl font-semibold text-accent">{spotlight.turningAge}</span>
-              </p>
+              <div className="flex items-center gap-4">
+                <p className="text-sm font-medium uppercase tracking-wide text-white/60">
+                  Turning <span className="text-2xl font-semibold text-accent">{spotlight.turningAge}</span>
+                </p>
+                <button
+                  type="button"
+                  onClick={() => removeEntry(spotlight.id)}
+                  aria-label={`Remove ${spotlight.name}`}
+                  className="shrink-0 rounded-md p-2 text-white/30 transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           </Card>
         )}
