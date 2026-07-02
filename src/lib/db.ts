@@ -33,11 +33,22 @@ export function ensureBirthdaysTable(): Promise<void> {
         last_notified_year INT,
         created_at TIMESTAMPTZ NOT NULL DEFAULT now()
       )
-    `.then(() => undefined);
+    `
+      .then(() => undefined)
+      .catch((error) => {
+        tableReady = null; // don't cache a failed attempt — let the next call retry
+        throw error;
+      });
   }
   return tableReady;
 }
 
 export function dbErrorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : "Unexpected server error.";
+  console.error("[db error]", error);
+  if (error instanceof Error) {
+    const withCode = error as Error & { code?: string; detail?: string };
+    const parts = [withCode.name, withCode.code, error.message, withCode.detail].filter(Boolean);
+    return parts.length > 0 ? parts.join(" — ") : "Unexpected server error (empty error message).";
+  }
+  return `Unexpected server error: ${String(error)}`;
 }

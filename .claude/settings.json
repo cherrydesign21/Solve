@@ -9,7 +9,9 @@
       "Bash(git commit -m ' *)",
       "Bash(git remote *)",
       "Bash(git branch *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(curl -s -w \"\\\\nHTTP %{http_code}\\\\n\" https://solve-lac.vercel.app/api/birthdays)",
+      "Bash(curl -s https://solve-lac.vercel.app/birthday-reminder)"
     ]
   }
 }

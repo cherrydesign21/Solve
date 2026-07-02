@@ -14,8 +14,11 @@ interface BirthdayRow {
   last_notified_year: number | null;
 }
 
-// Runs on a schedule (see vercel.json). Sends one email per birthday, once per
-// year, when the next occurrence (at UTC midnight) is 3-4 hours away.
+// Runs once daily at a fixed time (see vercel.json — 20:00 UTC), which is
+// exactly ~4 hours before the next UTC midnight. So any birthday whose next
+// occurrence is "tomorrow" gets caught in this single run. A Hobby Vercel
+// plan only allows daily crons, so this fixed-time design (vs. hourly
+// polling) is what makes "~4 hours before" achievable within that limit.
 export async function GET(request: NextRequest) {
   const secret = process.env.CRON_SECRET;
   if (secret && request.headers.get("authorization") !== `Bearer ${secret}`) {
@@ -38,7 +41,7 @@ export async function GET(request: NextRequest) {
       const hoursUntil = (computed.nextDate.getTime() - now.getTime()) / 3_600_000;
       const alreadyNotified = row.last_notified_year === computed.nextDate.getFullYear();
 
-      if (alreadyNotified || hoursUntil > 4 || hoursUntil <= 3) continue;
+      if (alreadyNotified || hoursUntil > 5 || hoursUntil <= 3) continue;
 
       try {
         await sendBirthdayReminderEmail({ to: row.email, name: row.name, turningAge: computed.turningAge });
