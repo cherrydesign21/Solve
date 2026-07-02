@@ -25,6 +25,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Manual test trigger (still requires the CRON_SECRET above): bypasses the
+  // time-of-day window so the send pipeline can be verified without waiting
+  // for the real 3-5 hour mark. Does not bypass the once-per-year guard.
+  const force = request.nextUrl.searchParams.get("force") === "true";
+
   try {
     await ensureBirthdaysTable();
     const sql = getSql();
@@ -40,8 +45,9 @@ export async function GET(request: NextRequest) {
       const computed = computeBirthday({ id: row.id, name: row.name, dob: row.dob }, now);
       const hoursUntil = (computed.nextDate.getTime() - now.getTime()) / 3_600_000;
       const alreadyNotified = row.last_notified_year === computed.nextDate.getFullYear();
+      const inWindow = hoursUntil > 3 && hoursUntil <= 5;
 
-      if (alreadyNotified || hoursUntil > 5 || hoursUntil <= 3) continue;
+      if (alreadyNotified || (!force && !inWindow)) continue;
 
       try {
         await sendBirthdayReminderEmail({ to: row.email, name: row.name, turningAge: computed.turningAge });
