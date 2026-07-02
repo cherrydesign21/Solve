@@ -11,7 +11,8 @@
       "Bash(git branch *)",
       "Bash(git push *)",
       "Bash(curl -s -w \"\\\\nHTTP %{http_code}\\\\n\" https://solve-lac.vercel.app/api/birthdays)",
-      "Bash(curl -s https://solve-lac.vercel.app/birthday-reminder)"
+      "Bash(curl -s https://solve-lac.vercel.app/birthday-reminder)",
+      "Bash(npm install *)"
     ]
   }
 }

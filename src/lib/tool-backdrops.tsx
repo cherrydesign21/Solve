@@ -4,7 +4,9 @@ import {
   Banknote,
   Cake,
   Calculator,
+  Camera,
   Coins,
+  Crop,
   FileText,
   Grid3x3,
   Landmark,
@@ -59,5 +61,9 @@ export const toolBackdrops: Record<string, BackdropIcon[]> = {
     { icon: Sun, className: "-right-16 -top-16 h-[420px] w-[420px] opacity-[0.045]" },
     { icon: Grid3x3, className: "-left-20 bottom-10 h-[280px] w-[280px] -rotate-6 opacity-[0.03]" },
     { icon: Zap, className: "right-14 bottom-4 h-[180px] w-[180px] rotate-12 opacity-[0.03]" },
+  ],
+  "image-cropper": [
+    { icon: Crop, className: "-right-16 -top-16 h-[400px] w-[400px] rotate-6 opacity-[0.04]" },
+    { icon: Camera, className: "-left-20 bottom-10 h-[260px] w-[260px] -rotate-6 opacity-[0.03]" },
   ],
 };

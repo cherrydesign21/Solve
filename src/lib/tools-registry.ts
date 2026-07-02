@@ -7,6 +7,7 @@ import {
   Ruler,
   ArrowLeftRight,
   Sun,
+  Crop,
 } from "lucide-react";
 
 export interface ToolMeta {
@@ -66,6 +67,13 @@ export const tools: ToolMeta[] = [
     shortName: "Solar",
     description: "Size a rooftop solar system from your electricity bill.",
     icon: Sun,
+  },
+  {
+    slug: "image-cropper",
+    name: "Image Cropper",
+    shortName: "Cropper",
+    description: "Crop images by hand, or auto-generate perfectly sized social media assets.",
+    icon: Crop,
   },
 ];
 
