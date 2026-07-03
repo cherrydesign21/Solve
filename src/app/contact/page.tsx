@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: "Get in touch with the Solve team.",
 };
 
-const CONTACT_EMAIL = "hello@example.com"; // TODO: replace with the real contact address
+const CONTACT_EMAIL = "singhparminder2192@gmail.com";
 
 export default function ContactPage() {
   return (

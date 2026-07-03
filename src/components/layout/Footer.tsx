@@ -19,6 +19,9 @@ export function Footer() {
         </div>
 
         <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/50">
+          <Link href="/about" className="transition-colors hover:text-white">
+            About
+          </Link>
           <Link href="/privacy-policy" className="transition-colors hover:text-white">
             Privacy Policy
           </Link>
