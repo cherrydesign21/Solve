@@ -1,7 +1,9 @@
 import type { LucideIcon } from "lucide-react";
 import {
+  Apple,
   ArrowLeftRight,
   Banknote,
+  Beef,
   Cake,
   Calculator,
   Camera,
@@ -9,18 +11,27 @@ import {
   Crop,
   FileSpreadsheet,
   FileText,
+  Flame,
+  Footprints,
   Grid3x3,
+  HeartPulse,
   Landmark,
   LayoutGrid,
   LineChart,
+  Moon,
   PartyPopper,
+  Percent,
+  PersonStanding,
   Receipt,
   Ruler,
+  Salad,
   Scale,
   Sparkles,
   Stamp,
   Sun,
   TrendingUp,
+  Utensils,
+  Weight,
   Zap,
 } from "lucide-react";
 
@@ -33,6 +44,38 @@ export const toolBackdrops: Record<string, BackdropIcon[]> = {
   home: [
     { icon: Sparkles, className: "-right-16 -top-20 h-[380px] w-[380px] rotate-12 opacity-[0.035]" },
     { icon: LayoutGrid, className: "-left-16 bottom-0 h-[300px] w-[300px] -rotate-12 opacity-[0.03]" },
+  ],
+  "bmi-calculator": [
+    { icon: PersonStanding, className: "-right-16 -top-16 h-[400px] w-[400px] rotate-6 opacity-[0.04]" },
+    { icon: Scale, className: "-left-20 bottom-10 h-[260px] w-[260px] -rotate-6 opacity-[0.03]" },
+  ],
+  "bmr-calculator": [
+    { icon: Flame, className: "-right-16 -top-16 h-[400px] w-[400px] rotate-6 opacity-[0.045]" },
+    { icon: HeartPulse, className: "-left-20 bottom-10 h-[260px] w-[260px] -rotate-6 opacity-[0.03]" },
+  ],
+  "calorie-calculator": [
+    { icon: Utensils, className: "-right-16 -top-16 h-[400px] w-[400px] rotate-6 opacity-[0.04]" },
+    { icon: Apple, className: "-left-20 bottom-10 h-[260px] w-[260px] -rotate-6 opacity-[0.03]" },
+  ],
+  "body-fat-calculator": [
+    { icon: Percent, className: "-right-16 -top-16 h-[400px] w-[400px] rotate-6 opacity-[0.04]" },
+    { icon: PersonStanding, className: "-left-20 bottom-10 h-[260px] w-[260px] -rotate-6 opacity-[0.03]" },
+  ],
+  "ideal-body-weight-calculator": [
+    { icon: Weight, className: "-right-16 -top-16 h-[400px] w-[400px] rotate-6 opacity-[0.04]" },
+    { icon: Scale, className: "-left-20 bottom-10 h-[260px] w-[260px] -rotate-6 opacity-[0.03]" },
+  ],
+  "protein-intake-calculator": [
+    { icon: Beef, className: "-right-16 -top-16 h-[400px] w-[400px] rotate-6 opacity-[0.04]" },
+    { icon: Salad, className: "-left-20 bottom-10 h-[260px] w-[260px] -rotate-6 opacity-[0.03]" },
+  ],
+  "steps-calculator": [
+    { icon: Footprints, className: "-right-16 -top-16 h-[400px] w-[400px] rotate-6 opacity-[0.04]" },
+    { icon: Flame, className: "-left-20 bottom-10 h-[260px] w-[260px] -rotate-6 opacity-[0.03]" },
+  ],
+  "biological-age-calculator": [
+    { icon: HeartPulse, className: "-right-16 -top-16 h-[400px] w-[400px] rotate-6 opacity-[0.045]" },
+    { icon: Moon, className: "-left-20 bottom-10 h-[260px] w-[260px] -rotate-6 opacity-[0.03]" },
   ],
   "emi-calculator": [
     { icon: Calculator, className: "-right-20 -top-16 h-[420px] w-[420px] rotate-6 opacity-[0.04]" },

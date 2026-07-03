@@ -9,6 +9,14 @@ import {
   Sun,
   Crop,
   FileSpreadsheet,
+  PersonStanding,
+  Flame,
+  Utensils,
+  Percent,
+  Weight,
+  Beef,
+  Footprints,
+  HeartPulse,
 } from "lucide-react";
 
 export const categoryOrder = [
@@ -33,6 +41,70 @@ export interface ToolMeta {
 }
 
 export const tools: ToolMeta[] = [
+  {
+    slug: "bmi-calculator",
+    name: "BMI Calculator",
+    shortName: "BMI",
+    description: "Check your body mass index and healthy weight range.",
+    icon: PersonStanding,
+    category: "Health and Fitness",
+  },
+  {
+    slug: "bmr-calculator",
+    name: "BMR Calculator",
+    shortName: "BMR",
+    description: "Find your resting metabolic rate and calories by activity level.",
+    icon: Flame,
+    category: "Health and Fitness",
+  },
+  {
+    slug: "calorie-calculator",
+    name: "Calorie Calculator",
+    shortName: "Calories",
+    description: "Get your daily calorie target and macro split for your goal.",
+    icon: Utensils,
+    category: "Health and Fitness",
+  },
+  {
+    slug: "body-fat-calculator",
+    name: "Body Fat Percentage Calculator",
+    shortName: "Body Fat",
+    description: "Estimate body fat percentage using the U.S. Navy method.",
+    icon: Percent,
+    category: "Health and Fitness",
+  },
+  {
+    slug: "ideal-body-weight-calculator",
+    name: "Ideal Body Weight Calculator",
+    shortName: "Ideal Weight",
+    description: "Compare your ideal weight range across four medical formulas.",
+    icon: Weight,
+    category: "Health and Fitness",
+  },
+  {
+    slug: "protein-intake-calculator",
+    name: "Protein Intake Calculator",
+    shortName: "Protein",
+    description: "Work out your daily protein target based on activity level.",
+    icon: Beef,
+    category: "Health and Fitness",
+  },
+  {
+    slug: "steps-calculator",
+    name: "Steps to Calories/Distance Calculator",
+    shortName: "Steps",
+    description: "Convert your daily step count into distance and calories burned.",
+    icon: Footprints,
+    category: "Health and Fitness",
+  },
+  {
+    slug: "biological-age-calculator",
+    name: "Biological Age Calculator",
+    shortName: "Bio Age",
+    description: "Estimate your wellness age from lifestyle habits.",
+    icon: HeartPulse,
+    category: "Health and Fitness",
+  },
   {
     slug: "emi-calculator",
     name: "EMI Calculator",
