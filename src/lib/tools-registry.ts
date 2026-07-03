@@ -8,6 +8,7 @@ import {
   ArrowLeftRight,
   Sun,
   Crop,
+  FileSpreadsheet,
 } from "lucide-react";
 
 export interface ToolMeta {
@@ -74,6 +75,13 @@ export const tools: ToolMeta[] = [
     shortName: "Cropper",
     description: "Crop images by hand, or auto-generate perfectly sized social media assets.",
     icon: Crop,
+  },
+  {
+    slug: "salary-slip-maker",
+    name: "Salary Slip Maker",
+    shortName: "Salary Slip",
+    description: "Build a professional salary slip and export it as JPG or PDF.",
+    icon: FileSpreadsheet,
   },
 ];
 

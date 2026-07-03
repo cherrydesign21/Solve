@@ -1,32 +1,43 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import Cropper, { type Area } from "react-easy-crop";
-import { Download, Loader2, Sparkles } from "lucide-react";
-import { Slider } from "@/components/ui/Slider";
-import { PresetPicker } from "./PresetPicker";
-import { socialPresets, type SocialPreset } from "./presets";
-import { computeSubjectCropRect, downloadBlob, exportCroppedImage, type FaceBox, type PixelCrop } from "./logic";
+import { useEffect, useState } from "react";
+import { Download, FolderArchive, Loader2, Sparkles } from "lucide-react";
+import {
+  computeSubjectCropRect,
+  downloadBlob,
+  exportCroppedImage,
+  scaledDimensions,
+  slugify,
+  type FaceBox,
+  type PixelCrop,
+} from "./logic";
+import { groupPresetsByPlatform, socialPresets, type SocialPreset } from "./presets";
 import { useFaceDetection } from "./useFaceDetection";
 
 interface SocialCropTabProps {
   image: HTMLImageElement;
-  imageKey: string;
 }
 
-export function SocialCropTab({ image, imageKey }: SocialCropTabProps) {
+interface PresetResult {
+  preset: SocialPreset;
+  crop: PixelCrop;
+  previewUrl: string;
+}
+
+function assetFilename(preset: SocialPreset): string {
+  return `${slugify(preset.platform)}-${slugify(preset.label)}.png`;
+}
+
+export function SocialCropTab({ image }: SocialCropTabProps) {
   const { detect, error: detectError } = useFaceDetection();
   const [faceStatus, setFaceStatus] = useState<"detecting" | "done">("detecting");
   const [face, setFace] = useState<FaceBox | null>(null);
-  const [preset, setPreset] = useState<SocialPreset | null>(null);
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
-  const [exporting, setExporting] = useState(false);
+  const [results, setResults] = useState<PresetResult[]>([]);
+  const [downloadingId, setDownloadingId] = useState<string | null>(null);
+  const [generatingZip, setGeneratingZip] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
-    // Reset detection state for the new image, then kick off async face detection.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setFaceStatus("detecting");
     setFace(null);
@@ -41,102 +52,141 @@ export function SocialCropTab({ image, imageKey }: SocialCropTabProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [image]);
 
-  const subjectRect: PixelCrop | null = useMemo(() => {
-    if (!preset || faceStatus !== "done") return null;
-    return computeSubjectCropRect(image.naturalWidth, image.naturalHeight, face, preset.width / preset.height);
-  }, [preset, faceStatus, face, image]);
+  useEffect(() => {
+    if (faceStatus !== "done") return;
+    let cancelled = false;
+    (async () => {
+      const generated: PresetResult[] = [];
+      for (const preset of socialPresets) {
+        const crop = computeSubjectCropRect(
+          image.naturalWidth,
+          image.naturalHeight,
+          face,
+          preset.width / preset.height
+        );
+        const previewSize = scaledDimensions(preset.width, preset.height, 320);
+        const blob = await exportCroppedImage(image, crop, 0, previewSize.width, previewSize.height, "image/jpeg");
+        if (cancelled) return;
+        generated.push({ preset, crop, previewUrl: URL.createObjectURL(blob) });
+      }
+      if (!cancelled) setResults(generated);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [faceStatus, face, image]);
 
-  const handleSelectPreset = (next: SocialPreset) => {
-    setPreset(next);
-    setCrop({ x: 0, y: 0 });
-    setZoom(1);
-    setCroppedAreaPixels(null);
-  };
+  // Revoke preview object URLs whenever a new batch replaces them, and on unmount.
+  useEffect(() => {
+    return () => {
+      results.forEach((r) => URL.revokeObjectURL(r.previewUrl));
+    };
+  }, [results]);
 
-  const handleDownload = async () => {
-    if (!preset || !croppedAreaPixels) return;
-    setExporting(true);
+  const handleDownloadSingle = async (result: PresetResult) => {
+    setDownloadingId(result.preset.id);
     try {
-      const blob = await exportCroppedImage(image, croppedAreaPixels, 0, preset.width, preset.height);
-      const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-      downloadBlob(blob, `${slug(preset.platform)}-${slug(preset.label)}.png`);
+      const blob = await exportCroppedImage(image, result.crop, 0, result.preset.width, result.preset.height);
+      downloadBlob(blob, assetFilename(result.preset));
     } finally {
-      setExporting(false);
+      setDownloadingId(null);
     }
   };
 
+  const handleDownloadAll = async () => {
+    setGeneratingZip(true);
+    try {
+      const { default: JSZip } = await import("jszip");
+      const zip = new JSZip();
+      for (const result of results) {
+        const blob = await exportCroppedImage(image, result.crop, 0, result.preset.width, result.preset.height);
+        zip.file(assetFilename(result.preset), blob);
+      }
+      const zipBlob = await zip.generateAsync({ type: "blob" });
+      downloadBlob(zipBlob, "solve-social-media-assets.zip");
+    } finally {
+      setGeneratingZip(false);
+    }
+  };
+
+  if (faceStatus !== "done" || results.length === 0) {
+    return (
+      <div className="flex h-[300px] flex-col items-center justify-center gap-3 rounded-xl border border-white/10 bg-white/[0.02]">
+        <Loader2 className="h-6 w-6 animate-spin text-accent" />
+        <p className="text-sm text-white/50">
+          {faceStatus !== "done" ? "Detecting the subject…" : "Generating previews…"}
+        </p>
+      </div>
+    );
+  }
+
+  const groups = groupPresetsByPlatform(results.map((r) => r.preset));
+
   return (
-    <div className="flex flex-col gap-6 lg:flex-row lg:gap-8">
-      <div className="lg:w-[280px] lg:shrink-0 lg:overflow-y-auto">
-        <PresetPicker presets={socialPresets} selectedId={preset?.id ?? null} onSelect={handleSelectPreset} />
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 sm:px-5">
+        <p className="flex items-center gap-2 text-sm text-white/60">
+          {face ? (
+            <>
+              <Sparkles className="h-4 w-4 text-accent" />
+              <span className="text-white">Subject auto-centered</span> across all {results.length} sizes
+            </>
+          ) : (
+            <span>No face detected — using a centered crop for all {results.length} sizes</span>
+          )}
+        </p>
+        <button
+          type="button"
+          onClick={handleDownloadAll}
+          disabled={generatingZip}
+          className="flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-semibold uppercase tracking-wide text-black transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          {generatingZip ? <Loader2 className="h-4 w-4 animate-spin" /> : <FolderArchive className="h-4 w-4" />}
+          {generatingZip ? "Zipping…" : "Download All (ZIP)"}
+        </button>
       </div>
 
-      <div className="min-w-0 flex-1">
-        {!preset && (
-          <div className="flex h-[380px] flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-white/15 px-6 text-center sm:h-[460px]">
-            <Sparkles className="h-8 w-8 text-white/25" />
-            <p className="max-w-xs text-sm text-white/40">
-              Pick a platform on the left to generate a perfectly sized, subject-centered crop.
-            </p>
-          </div>
-        )}
+      {detectError && <p className="text-xs text-white/30">{detectError}</p>}
 
-        {preset && faceStatus !== "done" && (
-          <div className="flex h-[380px] flex-col items-center justify-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] sm:h-[460px]">
-            <Loader2 className="h-6 w-6 animate-spin text-accent" />
-            <p className="text-sm text-white/50">Detecting the subject…</p>
-          </div>
-        )}
-
-        {preset && faceStatus === "done" && subjectRect && (
-          <>
-            <div className="relative h-[380px] w-full overflow-hidden rounded-xl border border-white/10 bg-black sm:h-[460px]">
-              <Cropper
-                key={`${imageKey}-${preset.id}`}
-                image={image.src}
-                crop={crop}
-                zoom={zoom}
-                rotation={0}
-                aspect={preset.width / preset.height}
-                onCropChange={setCrop}
-                onZoomChange={setZoom}
-                onCropComplete={(_area, areaPixels) => setCroppedAreaPixels(areaPixels)}
-                initialCroppedAreaPixels={subjectRect}
-              />
+      <div className="flex flex-col gap-6">
+        {Object.entries(groups).map(([platform, presets]) => (
+          <div key={platform} className="flex flex-col gap-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/40">{platform}</p>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              {presets.map((preset) => {
+                const result = results.find((r) => r.preset.id === preset.id);
+                if (!result) return null;
+                return (
+                  <div key={preset.id} className="flex flex-col gap-2">
+                    <div className="group relative overflow-hidden rounded-lg border border-white/10 bg-black">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={result.previewUrl} alt={`${preset.platform} ${preset.label} preview`} className="block w-full" />
+                      <button
+                        type="button"
+                        onClick={() => handleDownloadSingle(result)}
+                        disabled={downloadingId === preset.id}
+                        aria-label={`Download ${preset.platform} ${preset.label}`}
+                        className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/70 text-white opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100 disabled:opacity-100"
+                      >
+                        {downloadingId === preset.id ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Download className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-white">{preset.label}</p>
+                      <p className="text-[11px] text-white/35">
+                        {preset.width} × {preset.height}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-
-            <div className="mt-5 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-              <div className="flex flex-col gap-2 sm:w-56">
-                <p className="text-sm font-medium text-white">Zoom</p>
-                <Slider value={zoom} min={1} max={4} step={0.01} onChange={setZoom} ariaLabel="Zoom" />
-              </div>
-
-              <p className="text-xs text-white/40 sm:text-sm">
-                Exports at exactly <span className="font-medium text-white">{preset.width} × {preset.height}px</span>
-                <br />
-                {face ? (
-                  <span className="mt-1 inline-flex items-center gap-1 text-accent">
-                    <Sparkles className="h-3.5 w-3.5" /> Subject auto-centered
-                  </span>
-                ) : (
-                  <span className="mt-1 inline-block text-white/30">No face detected — centered crop used</span>
-                )}
-              </p>
-
-              <button
-                type="button"
-                onClick={handleDownload}
-                disabled={!croppedAreaPixels || exporting}
-                className="flex items-center justify-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-semibold uppercase tracking-wide text-black transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                <Download className="h-4 w-4" />
-                {exporting ? "Exporting…" : "Download"}
-              </button>
-            </div>
-          </>
-        )}
-
-        {detectError && <p className="mt-3 text-xs text-white/30">{detectError}</p>}
+          </div>
+        ))}
       </div>
     </div>
   );

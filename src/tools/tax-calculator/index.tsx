@@ -98,16 +98,6 @@ export default function TaxCalculator() {
           </div>
 
           <div className="flex flex-col gap-8 lg:sticky lg:top-24 lg:self-start">
-            <ResultCard
-              heading="Total Tax Payable"
-              value={<AnimatedNumber value={result.totalTax} format={(v) => currency.format(v)} />}
-              rows={[
-                { label: "Taxable Income", value: currency.format(result.taxableIncome) },
-                { label: "Health & Education Cess (4%)", value: currency.format(result.cess) },
-                { label: "Take-home Income", value: currency.format(result.takeHome) },
-              ]}
-            />
-
             <div className="flex flex-col items-center gap-6">
               <DonutChart
                 segments={[
@@ -129,6 +119,16 @@ export default function TaxCalculator() {
                 ]}
               />
             </div>
+
+            <ResultCard
+              heading="Total Tax Payable"
+              value={<AnimatedNumber value={result.totalTax} format={(v) => currency.format(v)} />}
+              rows={[
+                { label: "Taxable Income", value: currency.format(result.taxableIncome) },
+                { label: "Health & Education Cess (4%)", value: currency.format(result.cess) },
+                { label: "Take-home Income", value: currency.format(result.takeHome) },
+              ]}
+            />
 
             <VerticalAdSlot />
           </div>

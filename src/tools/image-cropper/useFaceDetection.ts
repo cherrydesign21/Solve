@@ -10,7 +10,15 @@ async function loadModel(): Promise<BlazeFaceModel> {
   if (!modelPromise) {
     modelPromise = (async () => {
       const tf = await import("@tensorflow/tfjs");
-      await tf.ready();
+      try {
+        await tf.setBackend("webgl");
+        await tf.ready();
+      } catch {
+        // WebGL unavailable (older GPUs, some VMs/headless setups) — CPU backend
+        // is slower but keeps face detection working instead of silently failing.
+        await tf.setBackend("cpu");
+        await tf.ready();
+      }
       const blazeface = await import("@tensorflow-models/blazeface");
       return blazeface.load({ maxFaces: 5 });
     })();

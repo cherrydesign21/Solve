@@ -88,16 +88,6 @@ export default function EmiCalculator() {
           </div>
 
           <div className="flex flex-col gap-8 lg:sticky lg:top-24 lg:self-start">
-            <ResultCard
-              heading="Monthly EMI"
-              value={<AnimatedNumber value={result.emi} format={(v) => currency.format(v)} />}
-              rows={[
-                { label: "Principal Amount", value: currency.format(result.principal) },
-                { label: "Total Interest", value: currency.format(result.totalInterest) },
-                { label: "Total Amount", value: currency.format(result.totalAmount) },
-              ]}
-            />
-
             <div className="flex flex-col items-center gap-6">
               <DonutChart
                 segments={[
@@ -119,6 +109,16 @@ export default function EmiCalculator() {
                 ]}
               />
             </div>
+
+            <ResultCard
+              heading="Monthly EMI"
+              value={<AnimatedNumber value={result.emi} format={(v) => currency.format(v)} />}
+              rows={[
+                { label: "Principal Amount", value: currency.format(result.principal) },
+                { label: "Total Interest", value: currency.format(result.totalInterest) },
+                { label: "Total Amount", value: currency.format(result.totalAmount) },
+              ]}
+            />
 
             <VerticalAdSlot />
           </div>

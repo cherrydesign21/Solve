@@ -133,16 +133,20 @@ export function computeSubjectCropRect(
   return { x, y, width, height };
 }
 
-export function downloadBlob(blob: Blob, filename: string): void {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
+export function scaledDimensions(width: number, height: number, maxSize: number): { width: number; height: number } {
+  if (width <= maxSize && height <= maxSize) return { width, height };
+  const scale = Math.min(maxSize / width, maxSize / height);
+  return { width: Math.round(width * scale), height: Math.round(height * scale) };
 }
+
+export function slugify(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+export { downloadBlob } from "@/lib/download";
 
 export function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;

@@ -94,16 +94,6 @@ export default function SipCalculator() {
           </div>
 
           <div className="flex flex-col gap-8 lg:sticky lg:top-24 lg:self-start">
-            <ResultCard
-              heading="Total Value"
-              value={<AnimatedNumber value={result.total} format={(v) => currency.format(v)} />}
-              rows={[
-                { label: "Invested Amount", value: currency.format(result.invested) },
-                { label: "Estimated Returns", value: currency.format(result.returns) },
-                { label: "Total Value", value: currency.format(result.total) },
-              ]}
-            />
-
             <div className="flex flex-col items-center gap-6">
               <DonutChart
                 segments={[
@@ -125,6 +115,16 @@ export default function SipCalculator() {
                 ]}
               />
             </div>
+
+            <ResultCard
+              heading="Total Value"
+              value={<AnimatedNumber value={result.total} format={(v) => currency.format(v)} />}
+              rows={[
+                { label: "Invested Amount", value: currency.format(result.invested) },
+                { label: "Estimated Returns", value: currency.format(result.returns) },
+                { label: "Total Value", value: currency.format(result.total) },
+              ]}
+            />
 
             <VerticalAdSlot />
           </div>

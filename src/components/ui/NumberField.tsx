@@ -14,6 +14,7 @@ interface NumberFieldProps {
   className?: string;
   inputClassName?: string;
   ariaLabel?: string;
+  id?: string;
 }
 
 export function NumberField({
@@ -27,6 +28,7 @@ export function NumberField({
   className = "",
   inputClassName = "text-sm sm:text-base",
   ariaLabel,
+  id,
 }: NumberFieldProps) {
   const [isFocused, setIsFocused] = useState(false);
   const [raw, setRaw] = useState(() => formatNumber(value, decimals));
@@ -67,6 +69,7 @@ export function NumberField({
     >
       {prefix && <span className="shrink-0 text-xs sm:text-sm tracking-wide text-white/50">{prefix}</span>}
       <input
+        id={id}
         type="text"
         inputMode="decimal"
         aria-label={ariaLabel}

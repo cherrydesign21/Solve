@@ -7,6 +7,7 @@ import {
   Camera,
   Coins,
   Crop,
+  FileSpreadsheet,
   FileText,
   Grid3x3,
   Landmark,
@@ -17,6 +18,7 @@ import {
   Ruler,
   Scale,
   Sparkles,
+  Stamp,
   Sun,
   TrendingUp,
   Zap,
@@ -65,5 +67,9 @@ export const toolBackdrops: Record<string, BackdropIcon[]> = {
   "image-cropper": [
     { icon: Crop, className: "-right-16 -top-16 h-[400px] w-[400px] rotate-6 opacity-[0.04]" },
     { icon: Camera, className: "-left-20 bottom-10 h-[260px] w-[260px] -rotate-6 opacity-[0.03]" },
+  ],
+  "salary-slip-maker": [
+    { icon: FileSpreadsheet, className: "-right-16 -top-16 h-[400px] w-[400px] rotate-6 opacity-[0.04]" },
+    { icon: Stamp, className: "-left-20 bottom-10 h-[260px] w-[260px] -rotate-6 opacity-[0.03]" },
   ],
 };

@@ -100,7 +100,7 @@ export default function ImageCropper() {
             {mode === "custom" ? (
               <CustomCropTab image={image} imageKey={imageSrc ?? ""} />
             ) : (
-              <SocialCropTab image={image} imageKey={imageSrc ?? ""} />
+              <SocialCropTab image={image} />
             )}
           </div>
         )}

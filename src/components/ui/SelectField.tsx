@@ -13,12 +13,14 @@ interface SelectFieldProps {
   onChange: (value: string) => void;
   className?: string;
   ariaLabel?: string;
+  id?: string;
 }
 
-export function SelectField({ options, value, onChange, className = "", ariaLabel }: SelectFieldProps) {
+export function SelectField({ options, value, onChange, className = "", ariaLabel, id }: SelectFieldProps) {
   return (
     <div className={`relative ${className}`}>
       <select
+        id={id}
         aria-label={ariaLabel}
         value={value}
         onChange={(e) => onChange(e.target.value)}
