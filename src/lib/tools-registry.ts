@@ -28,6 +28,8 @@ import {
   Globe2,
   Timer,
   Gift,
+  Home,
+  Building2,
 } from "lucide-react";
 
 export const categoryOrder = [
@@ -275,6 +277,22 @@ export const tools: ToolMeta[] = [
     description: "Exact age in years, months and days, plus your next birthday.",
     icon: Gift,
     category: "Business",
+  },
+  {
+    slug: "rent-vs-buy-calculator",
+    name: "Rent vs Buy Calculator",
+    shortName: "Rent vs Buy",
+    description: "Compare the true cost of renting against buying a home.",
+    icon: Home,
+    category: "Real Estate",
+  },
+  {
+    slug: "property-tax-calculator",
+    name: "Property Tax Calculator",
+    shortName: "Property Tax",
+    description: "Estimate your annual property tax from value and rate.",
+    icon: Building2,
+    category: "Real Estate",
   },
 ];
 

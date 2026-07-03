@@ -4,6 +4,7 @@ import {
   ArrowLeftRight,
   Banknote,
   Beef,
+  Building2,
   Cake,
   Calculator,
   CalendarClock,
@@ -19,6 +20,7 @@ import {
   Globe2,
   Grid3x3,
   HeartPulse,
+  Home,
   Hourglass,
   Landmark,
   LayoutGrid,
@@ -174,5 +176,13 @@ export const toolBackdrops: Record<string, BackdropIcon[]> = {
   "age-calculator": [
     { icon: Gift, className: "-right-16 -top-16 h-[400px] w-[400px] rotate-6 opacity-[0.04]" },
     { icon: PartyPopper, className: "-left-20 bottom-10 h-[260px] w-[260px] -rotate-12 opacity-[0.03]" },
+  ],
+  "rent-vs-buy-calculator": [
+    { icon: Home, className: "-right-16 -top-16 h-[400px] w-[400px] rotate-6 opacity-[0.04]" },
+    { icon: Building2, className: "-left-20 bottom-10 h-[260px] w-[260px] -rotate-6 opacity-[0.03]" },
+  ],
+  "property-tax-calculator": [
+    { icon: Building2, className: "-right-16 -top-16 h-[400px] w-[400px] rotate-6 opacity-[0.04]" },
+    { icon: Landmark, className: "-left-20 bottom-10 h-[260px] w-[260px] -rotate-6 opacity-[0.03]" },
   ],
 };
