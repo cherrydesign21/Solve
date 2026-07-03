@@ -6,47 +6,59 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import clsx from "clsx";
-import { tools } from "@/lib/tools-registry";
+import { getToolsByCategory } from "@/lib/tools-registry";
 import { Logo } from "./Logo";
 import { CurrencySelector } from "./CurrencySelector";
 
 function NavList({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
+  const groups = getToolsByCategory();
+
   return (
-    <nav className="flex flex-col gap-1.5">
-      {tools.map((tool) => {
-        const href = `/${tool.slug}`;
-        const active = pathname === href;
-        const Icon = tool.icon;
-        return (
-          <Link
-            key={tool.slug}
-            href={href}
-            onClick={onNavigate}
-            className={clsx(
-              "group flex items-center gap-4 rounded-xl px-4 py-3.5 transition-colors duration-200",
-              active ? "bg-white/[0.08]" : "hover:bg-white/[0.05]"
-            )}
-          >
-            <span
-              className={clsx(
-                "flex h-9 w-9 shrink-0 items-center justify-center rounded-md transition-colors duration-200",
-                active ? "bg-accent text-black" : "bg-white/10 text-white/70 group-hover:text-white"
-              )}
-            >
-              <Icon className="h-[18px] w-[18px]" />
-            </span>
-            <span
-              className={clsx(
-                "text-[15px] font-medium transition-colors duration-200",
-                active ? "text-white" : "text-white/50 group-hover:text-white/80"
-              )}
-            >
-              {tool.name}
-            </span>
-          </Link>
-        );
-      })}
+    <nav className="flex flex-col gap-6">
+      {groups.map(({ category, tools: categoryTools }) => (
+        <div key={category} className="flex flex-col gap-1.5">
+          <p className="px-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/30">{category}</p>
+
+          {categoryTools.length === 0 ? (
+            <p className="px-4 py-2 text-xs text-white/20">Coming soon</p>
+          ) : (
+            categoryTools.map((tool) => {
+              const href = `/${tool.slug}`;
+              const active = pathname === href;
+              const Icon = tool.icon;
+              return (
+                <Link
+                  key={tool.slug}
+                  href={href}
+                  onClick={onNavigate}
+                  className={clsx(
+                    "group flex items-center gap-4 rounded-xl px-4 py-3.5 transition-colors duration-200",
+                    active ? "bg-white/[0.08]" : "hover:bg-white/[0.05]"
+                  )}
+                >
+                  <span
+                    className={clsx(
+                      "flex h-9 w-9 shrink-0 items-center justify-center rounded-md transition-colors duration-200",
+                      active ? "bg-accent text-black" : "bg-white/10 text-white/70 group-hover:text-white"
+                    )}
+                  >
+                    <Icon className="h-[18px] w-[18px]" />
+                  </span>
+                  <span
+                    className={clsx(
+                      "text-[15px] font-medium transition-colors duration-200",
+                      active ? "text-white" : "text-white/50 group-hover:text-white/80"
+                    )}
+                  >
+                    {tool.name}
+                  </span>
+                </Link>
+              );
+            })
+          )}
+        </div>
+      ))}
     </nav>
   );
 }

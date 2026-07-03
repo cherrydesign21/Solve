@@ -12,7 +12,12 @@
       "Bash(git push *)",
       "Bash(curl -s -w \"\\\\nHTTP %{http_code}\\\\n\" https://solve-lac.vercel.app/api/birthdays)",
       "Bash(curl -s https://solve-lac.vercel.app/birthday-reminder)",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(curl -s -o /dev/null -w \"EMI: %{http_code}\\\\n\" https://solve-lac.vercel.app/emi-calculator)",
+      "Bash(curl -s -o /dev/null -w \"Image Cropper: %{http_code}\\\\n\" https://solve-lac.vercel.app/image-cropper)",
+      "Bash(curl -s -o /dev/null -w \"Salary Slip: %{http_code}\\\\n\" https://solve-lac.vercel.app/salary-slip-maker)",
+      "Bash(curl -s https://solve-lac.vercel.app/salary-slip-maker)",
+      "Bash(curl -s https://solve-lac.vercel.app/image-cropper)"
     ]
   }
 }
