@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { StaticPage, SectionHeading, Paragraph, BulletList } from "@/components/ui/StaticPage";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "About",
   description: "What Solve is, and why it exists.",
-};
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (

@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { Mail } from "lucide-react";
 import { StaticPage, Paragraph } from "@/components/ui/StaticPage";
 import { Card } from "@/components/ui/Card";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Contact",
   description: "Get in touch with the Solve team.",
-};
+  path: "/contact",
+});
 
 const CONTACT_EMAIL = "singhparminder2192@gmail.com";
 
