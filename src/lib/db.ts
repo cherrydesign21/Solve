@@ -1,4 +1,5 @@
 import postgres from "postgres";
+import { MissingConfigError } from "./errors";
 
 let client: postgres.Sql | null = null;
 
@@ -6,7 +7,7 @@ export function getSql(): postgres.Sql {
   if (client) return client;
   const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL;
   if (!connectionString) {
-    throw new Error(
+    throw new MissingConfigError(
       "Missing DATABASE_URL. Add your Supabase (or other Postgres) connection string in Vercel's " +
         "Environment Variables to enable birthday reminders."
     );
@@ -44,6 +45,11 @@ export function ensureBirthdaysTable(): Promise<void> {
 }
 
 export function dbErrorMessage(error: unknown): string {
+  if (error instanceof MissingConfigError) {
+    // Log the real cause server-side only — never surface env var names to the client.
+    console.error("[birthday-reminder] feature unavailable:", error.message);
+    return "Reminders aren't available right now — please check back soon.";
+  }
   console.error("[db error]", error);
   if (error instanceof Error) {
     const withCode = error as Error & { code?: string; detail?: string };

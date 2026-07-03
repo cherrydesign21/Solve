@@ -75,11 +75,17 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
     async function fetchRates() {
       try {
-        const res = await fetch("https://open.er-api.com/v6/latest/INR");
+        const res = await fetch("/api/fx-rates");
         if (!res.ok) throw new Error("Request failed");
+        // The proxy always returns USD-based rates; re-pivot to INR-based
+        // rates (1 INR = X of currency) since that's what toDisplay/toInr assume.
         const data = (await res.json()) as { rates?: Record<string, number> };
-        if (!cancelled && data.rates) {
-          setRates({ ...FALLBACK_RATES, ...data.rates, INR: 1 });
+        const usdToInr = data.rates?.INR;
+        if (!cancelled && data.rates && usdToInr) {
+          const inrBased = Object.fromEntries(
+            Object.entries(data.rates).map(([code, usdRate]) => [code, usdRate / usdToInr])
+          );
+          setRates({ ...FALLBACK_RATES, ...inrBased, INR: 1 });
           setIsLive(true);
         }
       } catch {

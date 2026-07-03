@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { MissingConfigError } from "./errors";
 
 let client: Resend | null = null;
 
@@ -6,7 +7,7 @@ function getResendClient(): Resend {
   if (!client) {
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
-      throw new Error("Missing RESEND_API_KEY. Add it in your Vercel project's Environment Variables.");
+      throw new MissingConfigError("Missing RESEND_API_KEY. Add it in your Vercel project's Environment Variables.");
     }
     client = new Resend(apiKey);
   }

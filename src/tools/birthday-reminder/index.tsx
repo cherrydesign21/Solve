@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Plus, Trash2, PartyPopper, Cake, Mail, AlertTriangle } from "lucide-react";
+import { Plus, Trash2, PartyPopper, Cake, AlertTriangle } from "lucide-react";
 import { ToolHeader } from "@/components/ui/ToolHeader";
 import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
 import { toolBackdrops } from "@/lib/tool-backdrops";
@@ -264,11 +264,6 @@ export default function BirthdayReminder() {
             <p className="text-white/50">No birthdays saved yet. Add one above to start tracking.</p>
           </Card>
         )}
-
-        <p className="flex items-center gap-2 text-xs text-white/30">
-          <Mail className="h-3.5 w-3.5" />
-          Reminder emails require RESEND_API_KEY and DATABASE_URL to be configured on the server.
-        </p>
       </div>
     </div>
   );

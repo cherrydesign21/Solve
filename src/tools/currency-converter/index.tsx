@@ -41,7 +41,7 @@ export default function CurrencyConverter() {
   const fetchRates = async () => {
     setRatesState((prev) => ({ ...prev, loading: true }));
     try {
-      const res = await fetch(`https://open.er-api.com/v6/latest/${FALLBACK_BASE}`);
+      const res = await fetch("/api/fx-rates");
       if (!res.ok) throw new Error("Request failed");
       const data = (await res.json()) as {
         result: string;
@@ -99,9 +99,9 @@ export default function CurrencyConverter() {
                 <>
                   <span className="h-2 w-2 rounded-full bg-accent" />
                   <span>
-                    Live rates
-                    {ratesState.date ? ` · ${new Date(ratesState.date).toLocaleDateString()}` : ""} (base{" "}
-                    {ratesState.base})
+                    Rates updated hourly
+                    {ratesState.date ? ` · last updated ${new Date(ratesState.date).toLocaleDateString()}` : ""}{" "}
+                    (base {ratesState.base})
                   </span>
                 </>
               ) : (

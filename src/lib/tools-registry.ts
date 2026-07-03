@@ -226,7 +226,7 @@ export const tools: ToolMeta[] = [
     slug: "currency-converter",
     name: "Currency Converter",
     shortName: "Currency",
-    description: "Live exchange rates across major world currencies.",
+    description: "Exchange rates across major world currencies, updated hourly.",
     icon: ArrowLeftRight,
     category: "Miscellaneous",
   },

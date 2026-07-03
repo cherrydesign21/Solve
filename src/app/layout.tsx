@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navigation } from "@/components/layout/Navigation";
 import { GlowBackground } from "@/components/layout/GlowBackground";
 import { PageTransition } from "@/components/layout/PageTransition";
+import { Footer } from "@/components/layout/Footer";
 import { CurrencyProvider } from "@/lib/currency-context";
 import { HorizontalAdSlot } from "@/components/ui/AdSlot";
 
@@ -48,6 +49,7 @@ export default function RootLayout({
               <div className="mx-auto w-full max-w-[1400px] px-4 py-6 sm:px-8 sm:py-10 lg:px-12 lg:py-12">
                 <PageTransition>{children}</PageTransition>
                 <HorizontalAdSlot className="mt-10" />
+                <Footer />
               </div>
             </main>
           </div>
