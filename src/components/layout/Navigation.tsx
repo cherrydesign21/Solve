@@ -4,61 +4,126 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import clsx from "clsx";
-import { getToolsByCategory } from "@/lib/tools-registry";
+import { getToolBySlug, getToolsByCategory, type ToolCategory } from "@/lib/tools-registry";
 import { Logo } from "./Logo";
 import { CurrencySelector } from "./CurrencySelector";
+
+function useActiveCategory(): ToolCategory | null {
+  const pathname = usePathname();
+  return getToolBySlug(pathname.replace(/^\//, ""))?.category ?? null;
+}
 
 function NavList({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   const groups = getToolsByCategory();
+  const activeCategory = useActiveCategory();
+
+  const [expanded, setExpanded] = useState<Set<ToolCategory>>(
+    () => new Set(activeCategory ? [activeCategory] : [])
+  );
+  const [lastActiveCategory, setLastActiveCategory] = useState(activeCategory);
+
+  if (activeCategory !== lastActiveCategory) {
+    setLastActiveCategory(activeCategory);
+    if (activeCategory) {
+      setExpanded((prev) => new Set(prev).add(activeCategory));
+    }
+  }
+
+  const toggle = (category: ToolCategory) => {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(category)) next.delete(category);
+      else next.add(category);
+      return next;
+    });
+  };
 
   return (
-    <nav className="flex flex-col gap-6">
-      {groups.map(({ category, tools: categoryTools }) => (
-        <div key={category} className="flex flex-col gap-1.5">
-          <p className="px-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/30">{category}</p>
+    <nav className="flex flex-col gap-1">
+      {groups.map(({ category, tools: categoryTools }) => {
+        const isEmpty = categoryTools.length === 0;
+        const isOpen = !isEmpty && expanded.has(category);
 
-          {categoryTools.length === 0 ? (
-            <p className="px-4 py-2 text-xs text-white/20">Coming soon</p>
-          ) : (
-            categoryTools.map((tool) => {
-              const href = `/${tool.slug}`;
-              const active = pathname === href;
-              const Icon = tool.icon;
-              return (
-                <Link
-                  key={tool.slug}
-                  href={href}
-                  onClick={onNavigate}
+        return (
+          <div key={category} className="flex flex-col">
+            <button
+              type="button"
+              onClick={() => !isEmpty && toggle(category)}
+              disabled={isEmpty}
+              aria-expanded={isOpen}
+              className={clsx(
+                "flex items-center justify-between gap-2 rounded-lg px-4 py-2.5 text-left transition-colors duration-200",
+                !isEmpty && "hover:bg-white/[0.04]"
+              )}
+            >
+              <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/30">
+                {category}
+              </span>
+              {isEmpty ? (
+                <span className="text-[10px] font-medium uppercase tracking-wide text-white/15">Soon</span>
+              ) : (
+                <ChevronDown
                   className={clsx(
-                    "group flex items-center gap-4 rounded-xl px-4 py-3.5 transition-colors duration-200",
-                    active ? "bg-white/[0.08]" : "hover:bg-white/[0.05]"
+                    "h-3.5 w-3.5 shrink-0 text-white/30 transition-transform duration-200",
+                    isOpen && "rotate-180"
                   )}
+                />
+              )}
+            </button>
+
+            <AnimatePresence initial={false}>
+              {isOpen && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  className="overflow-hidden"
                 >
-                  <span
-                    className={clsx(
-                      "flex h-9 w-9 shrink-0 items-center justify-center rounded-md transition-colors duration-200",
-                      active ? "bg-accent text-black" : "bg-white/10 text-white/70 group-hover:text-white"
-                    )}
-                  >
-                    <Icon className="h-[18px] w-[18px]" />
-                  </span>
-                  <span
-                    className={clsx(
-                      "text-[15px] font-medium transition-colors duration-200",
-                      active ? "text-white" : "text-white/50 group-hover:text-white/80"
-                    )}
-                  >
-                    {tool.name}
-                  </span>
-                </Link>
-              );
-            })
-          )}
-        </div>
-      ))}
+                  <div className="flex flex-col gap-1 pb-3 pt-1">
+                    {categoryTools.map((tool) => {
+                      const href = `/${tool.slug}`;
+                      const active = pathname === href;
+                      const Icon = tool.icon;
+                      return (
+                        <Link
+                          key={tool.slug}
+                          href={href}
+                          onClick={onNavigate}
+                          className={clsx(
+                            "group flex items-center gap-4 rounded-xl px-4 py-3 transition-colors duration-200",
+                            active ? "bg-white/[0.08]" : "hover:bg-white/[0.05]"
+                          )}
+                        >
+                          <span
+                            className={clsx(
+                              "flex h-9 w-9 shrink-0 items-center justify-center rounded-md transition-colors duration-200",
+                              active ? "bg-accent text-black" : "bg-white/10 text-white/70 group-hover:text-white"
+                            )}
+                          >
+                            <Icon className="h-[18px] w-[18px]" />
+                          </span>
+                          <span
+                            className={clsx(
+                              "text-[15px] font-medium transition-colors duration-200",
+                              active ? "text-white" : "text-white/50 group-hover:text-white/80"
+                            )}
+                          >
+                            {tool.name}
+                          </span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        );
+      })}
     </nav>
   );
 }

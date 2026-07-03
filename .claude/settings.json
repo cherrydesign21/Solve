@@ -19,7 +19,9 @@
       "Bash(curl -s https://solve-lac.vercel.app/salary-slip-maker)",
       "Bash(curl -s https://solve-lac.vercel.app/image-cropper)",
       "Bash(curl -s https://solve-lac.vercel.app/)",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(node verify-accordion.js)",
+      "Bash(node verify-finance.js)"
     ]
   }
 }
