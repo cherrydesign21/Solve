@@ -24,6 +24,10 @@ import {
   ShieldCheck,
   Target,
   PercentCircle,
+  QrCode,
+  Globe2,
+  Timer,
+  Gift,
 } from "lucide-react";
 
 export const categoryOrder = [
@@ -238,6 +242,38 @@ export const tools: ToolMeta[] = [
     shortName: "Salary Slip",
     description: "Build a professional salary slip and export it as JPG or PDF.",
     icon: FileSpreadsheet,
+    category: "Business",
+  },
+  {
+    slug: "qr-code-generator",
+    name: "QR Code Generator",
+    shortName: "QR Code",
+    description: "Turn any text or URL into a downloadable QR code.",
+    icon: QrCode,
+    category: "Business",
+  },
+  {
+    slug: "timezone-converter",
+    name: "Time Zone Converter",
+    shortName: "Time Zone",
+    description: "Convert a date and time between any two time zones.",
+    icon: Globe2,
+    category: "Business",
+  },
+  {
+    slug: "countdown-timer",
+    name: "Countdown Timer",
+    shortName: "Countdown",
+    description: "Live countdown to any date and time.",
+    icon: Timer,
+    category: "Business",
+  },
+  {
+    slug: "age-calculator",
+    name: "Age Calculator",
+    shortName: "Age",
+    description: "Exact age in years, months and days, plus your next birthday.",
+    icon: Gift,
     category: "Business",
   },
 ];
