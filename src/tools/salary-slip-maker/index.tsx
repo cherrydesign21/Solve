@@ -15,7 +15,8 @@ import { CURRENCIES } from "@/lib/currency-context";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { defaultSalarySlipData, symbolFor } from "./logic";
 import { exportNodeAsJpg, exportNodeAsPdf } from "./export";
-import { SlipPreview } from "./SlipPreview";
+import { A4ScaledPreview } from "./A4ScaledPreview";
+import { A4_HEIGHT_PX, A4_WIDTH_PX, SlipPreview } from "./SlipPreview";
 import type { SalarySlipData } from "./types";
 
 function SectionHeading({ children }: { children: ReactNode }) {
@@ -248,8 +249,16 @@ export default function SalarySlipMaker() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
-            <div className="overflow-x-auto">
+          <div className="flex min-w-0 flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
+            <A4ScaledPreview width={A4_WIDTH_PX} height={A4_HEIGHT_PX}>
+              <SlipPreview data={data} />
+            </A4ScaledPreview>
+
+            {/* Rendered at full A4 size off-screen so exports always capture a
+                consistent, unscaled document regardless of the visible preview's scale.
+                A zero-size, overflow-hidden wrapper (rather than a large negative
+                offset) keeps this from ever expanding the page's scrollable area. */}
+            <div style={{ position: "absolute", width: 0, height: 0, overflow: "hidden" }} aria-hidden="true">
               <SlipPreview ref={previewRef} data={data} />
             </div>
 

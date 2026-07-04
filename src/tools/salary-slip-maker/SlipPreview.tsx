@@ -2,6 +2,14 @@ import { forwardRef } from "react";
 import { computeTotals, formatDate, formatMoney, formatPayPeriod } from "./logic";
 import type { SalarySlipData } from "./types";
 
+// A4 at 96 CSS px/inch (210mm x 297mm) — the fixed size the slip is authored
+// at, so both the on-screen preview and the exported JPG/PDF are true to an
+// A4 page. A ResizeObserver-driven scale wrapper shrinks this for display on
+// narrow screens (see A4ScaledPreview); export always captures this node at
+// full size regardless of that display scale.
+export const A4_WIDTH_PX = 794;
+export const A4_HEIGHT_PX = 1123;
+
 // Plain hex colors (not Tailwind's oklch/color-mix-based utilities) so this
 // subtree stays exportable via html2canvas, which can't parse modern CSS
 // color functions like oklch()/lab()/color-mix().
@@ -54,7 +62,11 @@ export const SlipPreview = forwardRef<HTMLDivElement, { data: SalarySlipData }>(
   const currency = (value: number) => formatMoney(value, data.currencyCode);
 
   return (
-    <div ref={ref} className="w-full overflow-hidden rounded-lg shadow-2xl" style={{ backgroundColor: c.white, color: c.ink }}>
+    <div
+      ref={ref}
+      className="overflow-hidden rounded-lg shadow-2xl"
+      style={{ backgroundColor: c.white, color: c.ink, width: A4_WIDTH_PX, minHeight: A4_HEIGHT_PX }}
+    >
       <div className="h-1.5" style={{ backgroundColor: c.accent }} />
 
       <div

@@ -14,7 +14,7 @@ import { computeCountdown, defaultTarget, toDateTimeLocalValue } from "./logic";
 
 function UnitBlock({ value, label }: { value: number; label: string }) {
   return (
-    <div className="flex flex-1 flex-col items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-6 sm:py-8">
+    <div className="flex min-w-0 flex-1 flex-col items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-6 sm:py-8">
       <p className="text-3xl font-bold tabular-nums text-accent sm:text-4xl lg:text-5xl">
         {String(value).padStart(2, "0")}
       </p>
