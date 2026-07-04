@@ -8,6 +8,7 @@ import {
   Cake,
   Calculator,
   CalendarClock,
+  CalendarRange,
   Camera,
   Coins,
   Crop,
@@ -48,6 +49,7 @@ import {
   Timer,
   TrendingDown,
   TrendingUp,
+  Type,
   Utensils,
   Weight,
   Zap,
@@ -184,5 +186,13 @@ export const toolBackdrops: Record<string, BackdropIcon[]> = {
   "property-tax-calculator": [
     { icon: Building2, className: "-right-16 -top-16 h-[400px] w-[400px] rotate-6 opacity-[0.04]" },
     { icon: Landmark, className: "-left-20 bottom-10 h-[260px] w-[260px] -rotate-6 opacity-[0.03]" },
+  ],
+  "date-difference-calculator": [
+    { icon: CalendarRange, className: "-right-16 -top-16 h-[400px] w-[400px] rotate-6 opacity-[0.04]" },
+    { icon: CalendarClock, className: "-left-20 bottom-10 h-[260px] w-[260px] -rotate-6 opacity-[0.03]" },
+  ],
+  "word-counter": [
+    { icon: Type, className: "-right-16 -top-16 h-[400px] w-[400px] rotate-6 opacity-[0.04]" },
+    { icon: FileText, className: "-left-20 bottom-10 h-[260px] w-[260px] -rotate-6 opacity-[0.03]" },
   ],
 };

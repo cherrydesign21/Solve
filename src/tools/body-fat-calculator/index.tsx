@@ -6,12 +6,13 @@ import { ToolHeader } from "@/components/ui/ToolHeader";
 import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
 import { toolBackdrops } from "@/lib/tool-backdrops";
 import { Tabs } from "@/components/ui/Tabs";
-import { SliderField } from "@/components/ui/SliderField";
+import { LengthSliderField } from "@/components/ui/LengthSliderField";
 import { ResultCard } from "@/components/ui/ResultCard";
 import { GaugeBar } from "@/components/ui/GaugeBar";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { getToolBySlug } from "@/lib/tools-registry";
 import type { Gender } from "@/lib/health";
 import { bodyFatZonesFemale, bodyFatZonesMale, calculateBodyFat } from "./logic";
@@ -47,41 +48,9 @@ export default function BodyFatCalculator() {
             <Tabs options={genderOptions} value={gender} onChange={setGender} />
 
             <div className="flex flex-col gap-8 sm:gap-10">
-              <SliderField
-                label="Height"
-                value={heightCm}
-                min={120}
-                max={220}
-                step={1}
-                onChange={setHeightCm}
-                suffix="cm"
-                minCaption="120 cm"
-                maxCaption="220 cm"
-              />
-              <SliderField
-                label="Neck"
-                value={neckCm}
-                min={25}
-                max={60}
-                step={0.5}
-                decimals={1}
-                onChange={setNeckCm}
-                suffix="cm"
-                minCaption="25 cm"
-                maxCaption="60 cm"
-              />
-              <SliderField
-                label="Waist"
-                value={waistCm}
-                min={50}
-                max={160}
-                step={0.5}
-                decimals={1}
-                onChange={setWaistCm}
-                suffix="cm"
-                minCaption="50 cm"
-                maxCaption="160 cm"
-              />
+              <LengthSliderField label="Height" valueCm={heightCm} minCm={120} maxCm={220} onChangeCm={setHeightCm} />
+              <LengthSliderField label="Neck" valueCm={neckCm} minCm={25} maxCm={60} onChangeCm={setNeckCm} />
+              <LengthSliderField label="Waist" valueCm={waistCm} minCm={50} maxCm={160} onChangeCm={setWaistCm} />
               <AnimatePresence initial={false}>
                 {gender === "female" && (
                   <motion.div
@@ -92,18 +61,7 @@ export default function BodyFatCalculator() {
                     transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                     className="overflow-hidden"
                   >
-                    <SliderField
-                      label="Hip"
-                      value={hipCm}
-                      min={60}
-                      max={170}
-                      step={0.5}
-                      decimals={1}
-                      onChange={setHipCm}
-                      suffix="cm"
-                      minCaption="60 cm"
-                      maxCaption="170 cm"
-                    />
+                    <LengthSliderField label="Hip" valueCm={hipCm} minCm={60} maxCm={170} onChangeCm={setHipCm} />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -130,6 +88,20 @@ export default function BodyFatCalculator() {
         Estimated using the U.S. Navy circumference method. Accuracy varies by body type — for precise
         readings, consider a DEXA scan or skinfold measurement.
       </p>
+
+      <ToolExplainer>
+        <p>
+          The U.S. Navy method estimates body fat from a log-based formula using neck, waist and (for
+          women) hip circumference relative to height — no calipers or scanning equipment needed, just a
+          tape measure. It was developed for military fitness screening and is popular because it&apos;s
+          simple and repeatable.
+        </p>
+        <p>
+          Measure at the narrowest point of your waist and directly below your Adam&apos;s apple for the
+          neck, using a soft tape pulled snug but not tight. Measuring at the same time of day, on an empty
+          stomach, gives the most consistent readings over time.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

@@ -10,6 +10,7 @@ import { ResultCard } from "@/components/ui/ResultCard";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { formatNumber } from "@/lib/format";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { calculateProtein, proteinLevels } from "./logic";
@@ -69,6 +70,19 @@ export default function ProteinIntakeCalculator() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          Protein needs scale with body weight, not calories, so this multiplies your weight in kilograms
+          by a per-kilogram target that rises with activity level — sedentary people need less to maintain
+          tissue, while strength trainers and endurance athletes need more to repair and build muscle.
+        </p>
+        <p>
+          Spreading intake across 3–4 meals (shown on the right) helps your body use it more effectively
+          than eating it all in one sitting, since muscle protein synthesis responds best to regular doses
+          throughout the day rather than one large one.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

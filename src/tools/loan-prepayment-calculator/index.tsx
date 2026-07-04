@@ -11,6 +11,7 @@ import { ResultCard } from "@/components/ui/ResultCard";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { useCurrency } from "@/lib/currency-context";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { calculatePrepayment, type PrepaymentMode } from "./logic";
@@ -138,6 +139,20 @@ export default function LoanPrepaymentCalculator() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          A prepayment goes straight toward reducing your outstanding principal, which cuts the interest
+          charged on every remaining instalment for the rest of the loan. You get to choose where that
+          saving shows up: keep the original EMI and finish the loan sooner, or keep the original tenure
+          and drop to a smaller monthly EMI.
+        </p>
+        <p>
+          Prepaying earlier in the loan saves more interest than the same amount paid later, because early
+          EMIs are weighted more heavily toward interest — the principal balance (and therefore future
+          interest) is largest at the start.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

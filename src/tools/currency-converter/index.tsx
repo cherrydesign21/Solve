@@ -6,6 +6,7 @@ import { ToolHeader } from "@/components/ui/ToolHeader";
 import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
 import { toolBackdrops } from "@/lib/tool-backdrops";
 import { Card } from "@/components/ui/Card";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { SelectField } from "@/components/ui/SelectField";
 import { NumberField } from "@/components/ui/NumberField";
 import { getToolBySlug } from "@/lib/tools-registry";
@@ -174,6 +175,19 @@ export default function CurrencyConverter() {
           </p>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          Rates are fetched from a live market data provider, cached for an hour, and pivoted through USD —
+          so converting, say, INR to JPY internally goes INR → USD → JPY using the current mid-market rate.
+          That&apos;s the same rate banks and exchanges reference before adding their own margin.
+        </p>
+        <p>
+          The rate you see is a mid-market reference rate, not what you&apos;d get from a bank or exchange
+          counter — those typically add a spread of 1–4%, so expect to receive somewhat less than this
+          calculator shows when actually converting cash.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

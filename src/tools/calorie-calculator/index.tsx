@@ -6,11 +6,13 @@ import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
 import { toolBackdrops } from "@/lib/tool-backdrops";
 import { Tabs } from "@/components/ui/Tabs";
 import { SliderField } from "@/components/ui/SliderField";
+import { LengthSliderField } from "@/components/ui/LengthSliderField";
 import { ResultCard } from "@/components/ui/ResultCard";
 import { DonutChart, DonutLegend } from "@/components/ui/DonutChart";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { formatNumber } from "@/lib/format";
 import { getToolBySlug } from "@/lib/tools-registry";
 import type { Gender } from "@/lib/health";
@@ -53,17 +55,7 @@ export default function CalorieCalculator() {
 
             <div className="flex flex-col gap-8 sm:gap-10">
               <SliderField label="Age" value={age} min={10} max={90} step={1} onChange={setAge} suffix="yrs" minCaption="10" maxCaption="90" />
-              <SliderField
-                label="Height"
-                value={heightCm}
-                min={120}
-                max={220}
-                step={1}
-                onChange={setHeightCm}
-                suffix="cm"
-                minCaption="120 cm"
-                maxCaption="220 cm"
-              />
+              <LengthSliderField label="Height" valueCm={heightCm} minCm={120} maxCm={220} onChangeCm={setHeightCm} />
               <SliderField
                 label="Weight"
                 value={weightKg}
@@ -126,6 +118,20 @@ export default function CalorieCalculator() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          We first calculate your BMR (Mifflin-St Jeor equation) and multiply it by your activity level to
+          get your maintenance calories — how much you&apos;d eat to stay the same weight. From there, your
+          goal shifts the target: roughly a 500 kcal daily deficit for steady weight loss (about 0.5 kg a
+          week), or a similar surplus for gaining.
+        </p>
+        <p>
+          The macro split follows common ratios for each goal — higher protein when cutting to protect
+          muscle, more carbs when bulking for training fuel. Treat this as a starting point and adjust
+          based on how your weight trends over 2–3 weeks.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

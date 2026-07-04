@@ -8,6 +8,7 @@ import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
 import { toolBackdrops } from "@/lib/tool-backdrops";
 import { Card } from "@/components/ui/Card";
 import { TextField } from "@/components/ui/TextField";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { getToolBySlug } from "@/lib/tools-registry";
 import type { BirthdayEntry } from "./types";
 import { computeBirthday, describeCountdown, formatDob, sortByUpcoming } from "./logic";
@@ -265,6 +266,19 @@ export default function BirthdayReminder() {
           </Card>
         )}
       </div>
+
+      <ToolExplainer>
+        <p>
+          Add a name, date of birth and email, and we store just enough to work out when their next
+          birthday falls and send a reminder email roughly four hours beforehand. The countdown recalculates
+          the next occurrence automatically each year, so you only need to enter someone once.
+        </p>
+        <p>
+          Names and dates on this page are visible to anyone using it — treat it as a shared list, not a
+          private one. Email addresses are the exception: they&apos;re used only to send the reminder and
+          are never displayed or returned anywhere.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

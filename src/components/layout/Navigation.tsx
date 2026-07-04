@@ -15,6 +15,11 @@ function useActiveCategory(): ToolCategory | null {
   return getToolBySlug(pathname.replace(/^\//, ""))?.category ?? null;
 }
 
+function useShowCurrencySelector(): boolean {
+  const pathname = usePathname();
+  return getToolBySlug(pathname.replace(/^\//, ""))?.usesCurrency ?? false;
+}
+
 function NavList({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   const groups = getToolsByCategory();
@@ -132,6 +137,7 @@ export function Navigation() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const [lastPathname, setLastPathname] = useState(pathname);
+  const showCurrencySelector = useShowCurrencySelector();
 
   if (pathname !== lastPathname) {
     setLastPathname(pathname);
@@ -151,9 +157,11 @@ export function Navigation() {
         <div className="flex items-center px-8 py-8">
           <Logo />
         </div>
-        <div className="px-6 pb-6">
-          <CurrencySelector />
-        </div>
+        {showCurrencySelector && (
+          <div className="px-6 pb-6">
+            <CurrencySelector />
+          </div>
+        )}
         <div className="flex-1 overflow-y-auto px-4 pb-8">
           <NavList />
         </div>
@@ -201,9 +209,11 @@ export function Navigation() {
                   <X className="h-4 w-4" />
                 </button>
               </div>
-              <div className="px-4 pb-6">
-                <CurrencySelector />
-              </div>
+              {showCurrencySelector && (
+                <div className="px-4 pb-6">
+                  <CurrencySelector />
+                </div>
+              )}
               <NavList onNavigate={() => setOpen(false)} />
             </motion.div>
           </motion.div>

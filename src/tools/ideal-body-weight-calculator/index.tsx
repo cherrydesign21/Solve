@@ -6,11 +6,12 @@ import { ToolHeader } from "@/components/ui/ToolHeader";
 import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
 import { toolBackdrops } from "@/lib/tool-backdrops";
 import { Tabs } from "@/components/ui/Tabs";
-import { SliderField } from "@/components/ui/SliderField";
+import { LengthSliderField } from "@/components/ui/LengthSliderField";
 import { ResultCard } from "@/components/ui/ResultCard";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { formatNumber } from "@/lib/format";
 import { getToolBySlug } from "@/lib/tools-registry";
 import type { Gender } from "@/lib/health";
@@ -45,17 +46,7 @@ export default function IdealBodyWeightCalculator() {
           <div className="flex flex-col gap-10 lg:gap-12">
             <Tabs options={genderOptions} value={gender} onChange={setGender} />
 
-            <SliderField
-              label="Height"
-              value={heightCm}
-              min={140}
-              max={210}
-              step={1}
-              onChange={setHeightCm}
-              suffix="cm"
-              minCaption="140 cm"
-              maxCaption="210 cm"
-            />
+            <LengthSliderField label="Height" valueCm={heightCm} minCm={140} maxCm={210} onChangeCm={setHeightCm} />
           </div>
 
           <div className="flex flex-col gap-8 lg:sticky lg:top-24 lg:self-start">
@@ -89,6 +80,20 @@ export default function IdealBodyWeightCalculator() {
         These formulas were originally developed for medication dosing, not fitness goals — treat the range
         as a general reference point, not a strict target.
       </p>
+
+      <ToolExplainer>
+        <p>
+          Devine (1974), Robinson (1983), Miller (1983) and Hamwi (1964) each estimate a baseline weight for
+          a given height, then adjust it slightly by gender — all four start from a base weight for 5 feet
+          of height and add a fixed amount per extra inch. They were designed by doctors to standardize drug
+          dosing calculations, which is why they don&apos;t account for frame size, muscle mass or ethnicity.
+        </p>
+        <p>
+          Because the four formulas use slightly different per-inch increments, they rarely agree exactly —
+          seeing the full spread here (rather than a single number) gives a more honest picture than any one
+          formula alone.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

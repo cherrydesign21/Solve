@@ -5,6 +5,7 @@ import { ImageOff, RefreshCw } from "lucide-react";
 import { Tabs } from "@/components/ui/Tabs";
 import { Card } from "@/components/ui/Card";
 import { ToolHeader } from "@/components/ui/ToolHeader";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
 import { toolBackdrops } from "@/lib/tool-backdrops";
 import { getToolBySlug } from "@/lib/tools-registry";
@@ -105,6 +106,21 @@ export default function ImageCropper() {
           </div>
         )}
       </Card>
+
+      <ToolExplainer>
+        <p>
+          Custom mode gives you a free-form crop with adjustable aspect ratio, handled entirely by your
+          browser&apos;s canvas — nothing is uploaded to a server, so your image never leaves your device.
+          Social Media mode goes a step further: it runs a small face-detection model locally to
+          auto-center the crop on the main subject before generating every platform&apos;s preset sizes at
+          once.
+        </p>
+        <p>
+          Because everything runs client-side, there&apos;s no file-size limit imposed by an upload, and it
+          works offline once the page has loaded. Download presets individually or grab all of them at once
+          as a zip.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

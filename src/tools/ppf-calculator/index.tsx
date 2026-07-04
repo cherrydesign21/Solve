@@ -11,6 +11,7 @@ import { DonutChart, DonutLegend } from "@/components/ui/DonutChart";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { useCurrency } from "@/lib/currency-context";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { calculatePpf } from "./logic";
@@ -108,6 +109,20 @@ export default function PpfCalculator() {
         extended in blocks of 5 years. Interest is set quarterly by the government — 7.1% is a recent
         reference rate, not guaranteed.
       </p>
+
+      <ToolExplainer>
+        <p>
+          PPF compounds annually — each year&apos;s contribution and the running balance both earn interest
+          at the government-declared rate, credited once a year. Because contributions, interest and
+          maturity proceeds are all tax-exempt (the &quot;EEE&quot; status), the real return is often higher
+          than the headline rate compared to a taxable investment at the same rate.
+        </p>
+        <p>
+          The 15-year lock-in makes PPF best suited to long-term goals like retirement — partial withdrawals
+          are allowed from year 7, but the account can&apos;t be closed early outside specific hardship
+          cases.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

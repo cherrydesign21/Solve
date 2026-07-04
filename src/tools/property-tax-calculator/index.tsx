@@ -10,6 +10,7 @@ import { ResultCard } from "@/components/ui/ResultCard";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { formatNumber } from "@/lib/format";
 import { useCurrency } from "@/lib/currency-context";
 import { getToolBySlug } from "@/lib/tools-registry";
@@ -97,6 +98,20 @@ export default function PropertyTaxCalculator() {
       <p className="mt-6 text-xs text-white/30">
         Assessment ratio and tax rate vary widely by local jurisdiction — check your municipal records for exact figures.
       </p>
+
+      <ToolExplainer>
+        <p>
+          Most jurisdictions don&apos;t tax your property&apos;s full market value — they apply an
+          assessment ratio first (often well under 100%) to get an &quot;assessed value,&quot; then apply
+          the local tax rate to that smaller number. Any exemption (like a homestead exemption) is
+          subtracted before the rate is applied.
+        </p>
+        <p>
+          Because assessment ratios and rates are set locally and change over time, this is best used to
+          sanity-check a number you already have or to compare scenarios — always confirm the current
+          figures with your local assessor&apos;s office before budgeting around them.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

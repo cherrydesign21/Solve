@@ -13,6 +13,7 @@ import { ResultCard } from "@/components/ui/ResultCard";
 import { Card } from "@/components/ui/Card";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { formatNumber } from "@/lib/format";
 import { useCurrency } from "@/lib/currency-context";
 import { getToolBySlug } from "@/lib/tools-registry";
@@ -126,6 +127,19 @@ export default function SolarPanelCalculator() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          System size is worked out from how much energy you actually use: your monthly usage is converted
+          to a daily average, then divided by your local peak sunlight hours to find the kW capacity needed
+          to cover it. Panel count follows from dividing that capacity by your chosen panel wattage.
+        </p>
+        <p>
+          Payback period compares the upfront installed cost against the monthly savings from electricity
+          you no longer buy from the grid — it doesn&apos;t account for financing costs, subsidies, or
+          panel degradation over time, all of which can shift the real-world payback in either direction.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

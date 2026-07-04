@@ -8,6 +8,7 @@ import { Tabs } from "@/components/ui/Tabs";
 import { NumberField } from "@/components/ui/NumberField";
 import { Card } from "@/components/ui/Card";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { formatNumber } from "@/lib/format";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { calculatePercentage, modeConfigs, type PercentageMode } from "./logic";
@@ -72,6 +73,20 @@ export default function PercentageCalculator() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          Each mode is a rearrangement of the same relationship between a part, a whole, and a percentage.
+          &quot;X% of Y&quot; multiplies Y by X÷100. &quot;X is what % of Y&quot; divides X by Y and multiplies
+          by 100. &quot;% Change&quot; takes the difference between two values as a fraction of the starting
+          value, so it correctly shows a decrease as negative.
+        </p>
+        <p>
+          Percent change is the one people most often get wrong by hand — going from 50 to 75 is a 50%
+          increase, but going from 75 back to 50 is only a 33.3% decrease, because the base you&apos;re
+          dividing by is different each time.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

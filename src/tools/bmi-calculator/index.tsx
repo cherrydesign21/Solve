@@ -5,11 +5,13 @@ import { ToolHeader } from "@/components/ui/ToolHeader";
 import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
 import { toolBackdrops } from "@/lib/tool-backdrops";
 import { SliderField } from "@/components/ui/SliderField";
+import { LengthSliderField } from "@/components/ui/LengthSliderField";
 import { ResultCard } from "@/components/ui/ResultCard";
 import { GaugeBar } from "@/components/ui/GaugeBar";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { formatNumber } from "@/lib/format";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { bmiCategory, bmiZones, calculateBmi, healthyWeightRange } from "./logic";
@@ -31,17 +33,7 @@ export default function BmiCalculator() {
       <Card className="p-5 sm:p-8 lg:p-10">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12">
           <div className="flex flex-col gap-8 sm:gap-10">
-            <SliderField
-              label="Height"
-              value={heightCm}
-              min={120}
-              max={220}
-              step={1}
-              onChange={setHeightCm}
-              suffix="cm"
-              minCaption="120 cm"
-              maxCaption="220 cm"
-            />
+            <LengthSliderField label="Height" valueCm={heightCm} minCm={120} maxCm={220} onChangeCm={setHeightCm} />
             <SliderField
               label="Weight"
               value={weightKg}
@@ -79,6 +71,20 @@ export default function BmiCalculator() {
         BMI is a general screening tool and doesn&apos;t account for muscle mass, bone density or body
         composition. It isn&apos;t a diagnosis — talk to a healthcare provider for personalized advice.
       </p>
+
+      <ToolExplainer>
+        <p>
+          Body Mass Index divides your weight in kilograms by the square of your height in metres
+          (BMI = weight ÷ height²). It&apos;s the same formula doctors and public health bodies like the WHO
+          use for population-level screening, which is why it&apos;s the most widely quoted weight metric
+          even though it can&apos;t distinguish muscle from fat.
+        </p>
+        <p>
+          Your healthy weight range above is simply the weight span that keeps your BMI between 18.5 and
+          24.9 at your current height — useful as a rough target, but athletes and very muscular people
+          often read &quot;overweight&quot; on BMI despite having low body fat.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

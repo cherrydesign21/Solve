@@ -12,6 +12,7 @@ import { DonutChart, DonutLegend } from "@/components/ui/DonutChart";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { useCurrency } from "@/lib/currency-context";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { calculateEmi, loanTypeConfig, type LoanType } from "./logic";
@@ -124,6 +125,20 @@ export default function EmiCalculator() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          EMI uses the standard amortizing-loan formula: EMI = P × r × (1+r)ⁿ ÷ [(1+r)ⁿ − 1], where P is
+          your loan amount, r is the monthly interest rate, and n is the number of monthly instalments.
+          Every payment blends principal and interest — early payments are mostly interest, later ones are
+          mostly principal, even though the EMI itself stays fixed.
+        </p>
+        <p>
+          A longer tenure lowers your monthly EMI but increases total interest paid over the life of the
+          loan, since you&apos;re borrowing the bank&apos;s money for longer. The donut above shows that
+          trade-off — how much of your total repayment is principal versus interest.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

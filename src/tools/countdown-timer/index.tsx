@@ -8,6 +8,7 @@ import { toolBackdrops } from "@/lib/tool-backdrops";
 import { Card } from "@/components/ui/Card";
 import { TextField } from "@/components/ui/TextField";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { computeCountdown, defaultTarget, toDateTimeLocalValue } from "./logic";
 
@@ -100,6 +101,19 @@ export default function CountdownTimer() {
           <VerticalAdSlot />
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          The countdown recalculates every second from the difference between your target date/time and
+          the current time on your device, split into whole days, hours, minutes and seconds. Once the
+          target passes, it flips to showing how long ago it happened instead.
+        </p>
+        <p>
+          Because it uses your browser&apos;s local clock and time zone, the target date/time you set is
+          interpreted in your own local time — sharing the page won&apos;t automatically adjust for someone
+          viewing it from a different time zone.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

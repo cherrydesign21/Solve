@@ -8,6 +8,7 @@ import { toolBackdrops } from "@/lib/tool-backdrops";
 import { Card } from "@/components/ui/Card";
 import { SelectField } from "@/components/ui/SelectField";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { getToolBySlug } from "@/lib/tools-registry";
 import {
   formatInZone,
@@ -104,6 +105,20 @@ export default function TimezoneConverter() {
           <VerticalAdSlot />
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          Time zone offsets aren&apos;t fixed — they shift with daylight saving time, and different
+          countries switch on different dates. This looks up the real offset for both zones on the exact
+          date you picked, so a conversion in July can differ from the same conversion in January even for
+          the same two cities.
+        </p>
+        <p>
+          That&apos;s also why scheduling a recurring meeting across zones can drift by an hour part of the
+          year — always double-check the date you actually care about rather than assuming today&apos;s
+          offset holds year-round.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

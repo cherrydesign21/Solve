@@ -11,6 +11,7 @@ import { DonutChart, DonutLegend } from "@/components/ui/DonutChart";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { useCurrency } from "@/lib/currency-context";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { calculateFd } from "./logic";
@@ -102,6 +103,20 @@ export default function FdCalculator() {
       </Card>
 
       <p className="mt-6 text-xs text-white/30">Assumes quarterly compounding, standard for most Indian bank fixed deposits.</p>
+
+      <ToolExplainer>
+        <p>
+          A Fixed Deposit locks your money away for a set tenure in exchange for a guaranteed interest
+          rate, compounded quarterly at most Indian banks. Because the rate is locked in upfront, an FD is
+          predictable — your maturity value here is exactly what you&apos;ll receive, unlike market-linked
+          investments.
+        </p>
+        <p>
+          FDs suit money you won&apos;t need before maturity and want to keep safe from market swings —
+          breaking one early usually comes with a penalty rate, so match the tenure to when you&apos;ll
+          actually need the funds.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

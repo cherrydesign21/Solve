@@ -7,10 +7,12 @@ import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
 import { toolBackdrops } from "@/lib/tool-backdrops";
 import { Tabs } from "@/components/ui/Tabs";
 import { SliderField } from "@/components/ui/SliderField";
+import { LengthSliderField } from "@/components/ui/LengthSliderField";
 import { ResultCard } from "@/components/ui/ResultCard";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { calculateBmi } from "@/tools/bmi-calculator/logic";
 import { getToolBySlug } from "@/lib/tools-registry";
 import {
@@ -85,17 +87,7 @@ export default function BiologicalAgeCalculator() {
           <div className="flex flex-col gap-10 lg:gap-12">
             <div className="flex flex-col gap-8 sm:gap-10">
               <SliderField label="Age" value={age} min={15} max={90} step={1} onChange={setAge} suffix="yrs" minCaption="15" maxCaption="90" />
-              <SliderField
-                label="Height"
-                value={heightCm}
-                min={120}
-                max={220}
-                step={1}
-                onChange={setHeightCm}
-                suffix="cm"
-                minCaption="120 cm"
-                maxCaption="220 cm"
-              />
+              <LengthSliderField label="Height" valueCm={heightCm} minCm={120} maxCm={220} onChangeCm={setHeightCm} />
               <SliderField
                 label="Weight"
                 value={weightKg}
@@ -153,6 +145,20 @@ export default function BiologicalAgeCalculator() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          This starts from your chronological age and applies small adjustments (a year or two either way)
+          for each lifestyle factor — smoking, exercise frequency, diet quality, alcohol use, stress, sleep
+          and BMI — based on how each one is generally associated with faster or slower aging in population
+          research.
+        </p>
+        <p>
+          It&apos;s a motivational snapshot, not a lab measurement — real biological age testing uses
+          things like DNA methylation (epigenetic clocks) or blood biomarkers. Use this to see which habits
+          are pulling your score up or down, not as a diagnosis.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

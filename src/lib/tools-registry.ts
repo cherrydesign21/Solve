@@ -30,6 +30,8 @@ import {
   Gift,
   Home,
   Building2,
+  CalendarRange,
+  Type,
 } from "lucide-react";
 
 export const categoryOrder = [
@@ -48,6 +50,8 @@ export interface ToolMeta {
   slug: string;
   name: string;
   shortName: string;
+  /** Whether this tool displays monetary values in the visitor's chosen display currency. */
+  usesCurrency?: boolean;
   description: string;
   icon: LucideIcon;
   category: ToolCategory;
@@ -125,6 +129,7 @@ export const tools: ToolMeta[] = [
     description: "Work out monthly loan instalments, interest and payoff totals.",
     icon: Calculator,
     category: "Finance",
+    usesCurrency: true,
   },
   {
     slug: "sip-calculator",
@@ -133,6 +138,7 @@ export const tools: ToolMeta[] = [
     description: "Project the future value of your monthly investments.",
     icon: TrendingUp,
     category: "Finance",
+    usesCurrency: true,
   },
   {
     slug: "tax-calculator",
@@ -149,6 +155,7 @@ export const tools: ToolMeta[] = [
     description: "See how a part-payment reduces your tenure or EMI.",
     icon: TrendingDown,
     category: "Finance",
+    usesCurrency: true,
   },
   {
     slug: "compound-interest-calculator",
@@ -157,6 +164,7 @@ export const tools: ToolMeta[] = [
     description: "Project growth with flexible compounding frequency.",
     icon: Sigma,
     category: "Finance",
+    usesCurrency: true,
   },
   {
     slug: "fd-calculator",
@@ -165,6 +173,7 @@ export const tools: ToolMeta[] = [
     description: "Work out the maturity value of a fixed deposit.",
     icon: PiggyBank,
     category: "Finance",
+    usesCurrency: true,
   },
   {
     slug: "rd-calculator",
@@ -173,6 +182,7 @@ export const tools: ToolMeta[] = [
     description: "Work out the maturity value of a recurring deposit.",
     icon: Repeat,
     category: "Finance",
+    usesCurrency: true,
   },
   {
     slug: "ppf-calculator",
@@ -181,6 +191,7 @@ export const tools: ToolMeta[] = [
     description: "Project your Public Provident Fund maturity value.",
     icon: ShieldCheck,
     category: "Finance",
+    usesCurrency: true,
   },
   {
     slug: "goal-sip-calculator",
@@ -189,6 +200,7 @@ export const tools: ToolMeta[] = [
     description: "Find the monthly SIP needed to hit a target amount.",
     icon: Target,
     category: "Finance",
+    usesCurrency: true,
   },
   {
     slug: "percentage-calculator",
@@ -221,6 +233,7 @@ export const tools: ToolMeta[] = [
     description: "Size a rooftop solar system from your electricity bill.",
     icon: Sun,
     category: "Miscellaneous",
+    usesCurrency: true,
   },
   {
     slug: "currency-converter",
@@ -285,6 +298,7 @@ export const tools: ToolMeta[] = [
     description: "Compare the true cost of renting against buying a home.",
     icon: Home,
     category: "Real Estate",
+    usesCurrency: true,
   },
   {
     slug: "property-tax-calculator",
@@ -293,6 +307,23 @@ export const tools: ToolMeta[] = [
     description: "Estimate your annual property tax from value and rate.",
     icon: Building2,
     category: "Real Estate",
+    usesCurrency: true,
+  },
+  {
+    slug: "date-difference-calculator",
+    name: "Date Difference Calculator",
+    shortName: "Date Difference",
+    description: "Find the exact time span between any two dates.",
+    icon: CalendarRange,
+    category: "Miscellaneous",
+  },
+  {
+    slug: "word-counter",
+    name: "Word & Character Counter",
+    shortName: "Word Counter",
+    description: "Count words, characters, sentences and estimate reading time.",
+    icon: Type,
+    category: "Miscellaneous",
   },
 ];
 

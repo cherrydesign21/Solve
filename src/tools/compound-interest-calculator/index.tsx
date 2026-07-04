@@ -12,6 +12,7 @@ import { DonutChart, DonutLegend } from "@/components/ui/DonutChart";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { useCurrency } from "@/lib/currency-context";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { calculateCompoundInterest, compoundingOptions } from "./logic";
@@ -114,6 +115,20 @@ export default function CompoundInterestCalculator() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          Compound interest uses A = P(1 + r/n)^(nt), where P is your principal, r is the annual rate, n is
+          how many times per year interest compounds, and t is the number of years. Unlike simple interest,
+          each compounding period earns interest on the interest already accumulated, not just the original
+          principal.
+        </p>
+        <p>
+          More frequent compounding (daily or monthly versus yearly) produces a slightly higher return for
+          the same stated rate, since interest starts earning its own interest sooner — try switching the
+          frequency above to see the effect for yourself.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

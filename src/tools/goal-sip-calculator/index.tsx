@@ -11,6 +11,7 @@ import { DonutChart, DonutLegend } from "@/components/ui/DonutChart";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { useCurrency } from "@/lib/currency-context";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { calculateGoalSip } from "./logic";
@@ -100,6 +101,19 @@ export default function GoalSipCalculator() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          This works backwards from the regular SIP formula — instead of telling you what a fixed monthly
+          amount grows into, it solves for the monthly amount that grows into your target by the deadline
+          you set, given your expected return rate.
+        </p>
+        <p>
+          A higher assumed return rate lowers the required monthly SIP, but returns aren&apos;t guaranteed —
+          it&apos;s worth checking the required amount at a more conservative rate too, so your goal doesn&apos;t
+          depend entirely on optimistic market assumptions.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

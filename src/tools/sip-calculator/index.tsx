@@ -12,6 +12,7 @@ import { DonutChart, DonutLegend } from "@/components/ui/DonutChart";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { useCurrency } from "@/lib/currency-context";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { calculateLumpsum, calculateSip, type SipMode } from "./logic";
@@ -130,6 +131,21 @@ export default function SipCalculator() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          A SIP (Systematic Investment Plan) compounds each monthly instalment at your expected return
+          rate for however many months remain until your goal, so early instalments have more time to grow
+          than later ones — this is why the future value formula weights each contribution by its own
+          compounding period rather than treating the total as a single lump sum.
+        </p>
+        <p>
+          Lumpsum mode instead compounds one upfront amount for the full period using standard compound
+          interest. SIPs suit steady income and reduce the risk of investing everything at a market peak,
+          while a lumpsum can outperform if invested right before a sustained rally — timing is the
+          trade-off.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

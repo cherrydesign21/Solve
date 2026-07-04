@@ -6,10 +6,12 @@ import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
 import { toolBackdrops } from "@/lib/tool-backdrops";
 import { Tabs } from "@/components/ui/Tabs";
 import { SliderField } from "@/components/ui/SliderField";
+import { LengthSliderField } from "@/components/ui/LengthSliderField";
 import { ResultCard } from "@/components/ui/ResultCard";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { formatNumber } from "@/lib/format";
 import { getToolBySlug } from "@/lib/tools-registry";
 import type { Gender } from "@/lib/health";
@@ -53,17 +55,7 @@ export default function StepsCalculator() {
                 minCaption="0"
                 maxCaption="30,000"
               />
-              <SliderField
-                label="Height"
-                value={heightCm}
-                min={120}
-                max={220}
-                step={1}
-                onChange={setHeightCm}
-                suffix="cm"
-                minCaption="120 cm"
-                maxCaption="220 cm"
-              />
+              <LengthSliderField label="Height" valueCm={heightCm} minCm={120} maxCm={220} onChangeCm={setHeightCm} />
               <SliderField
                 label="Weight"
                 value={weightKg}
@@ -93,6 +85,20 @@ export default function StepsCalculator() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          Stride length is estimated from your height and gender (women tend to have a slightly shorter
+          stride at the same height), which converts your step count into distance walked. Calories are
+          then estimated from that distance and your body weight, since heavier bodies burn more energy
+          covering the same ground.
+        </p>
+        <p>
+          Active time assumes a typical walking pace of around 100 steps per minute — brisker or slower
+          walking will change your real time, but the distance and calorie estimates stay accurate
+          regardless of pace.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

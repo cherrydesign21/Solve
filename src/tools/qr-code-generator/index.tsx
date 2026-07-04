@@ -11,6 +11,7 @@ import { TextField } from "@/components/ui/TextField";
 import { SliderField } from "@/components/ui/SliderField";
 import { Tabs } from "@/components/ui/Tabs";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { downloadBlob } from "@/lib/download";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { levelOptions, qrFilename, type QrLevel } from "./logic";
@@ -126,6 +127,19 @@ export default function QrCodeGenerator() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          The QR code encodes your text or URL directly into a grid of black and white modules, along with
+          error-correction data — that&apos;s what lets a scanner still read the code even if part of it is
+          smudged, torn or has a logo placed over it. Higher error correction adds more redundancy at the
+          cost of a denser-looking code.
+        </p>
+        <p>
+          Everything happens in your browser, so nothing you type is sent anywhere — the code is generated
+          and rendered locally, then exported as a PNG when you download it.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

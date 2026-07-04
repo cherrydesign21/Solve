@@ -7,10 +7,12 @@ import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
 import { toolBackdrops } from "@/lib/tool-backdrops";
 import { Tabs } from "@/components/ui/Tabs";
 import { SliderField } from "@/components/ui/SliderField";
+import { LengthSliderField } from "@/components/ui/LengthSliderField";
 import { ResultCard } from "@/components/ui/ResultCard";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { formatNumber } from "@/lib/format";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { activityLevels, calculateBmr, type Gender } from "./logic";
@@ -41,17 +43,7 @@ export default function BmrCalculator() {
 
             <div className="flex flex-col gap-8 sm:gap-10">
               <SliderField label="Age" value={age} min={10} max={90} step={1} onChange={setAge} suffix="yrs" minCaption="10" maxCaption="90" />
-              <SliderField
-                label="Height"
-                value={heightCm}
-                min={120}
-                max={220}
-                step={1}
-                onChange={setHeightCm}
-                suffix="cm"
-                minCaption="120 cm"
-                maxCaption="220 cm"
-              />
+              <LengthSliderField label="Height" valueCm={heightCm} minCm={120} maxCm={220} onChangeCm={setHeightCm} />
               <SliderField
                 label="Weight"
                 value={weightKg}
@@ -94,6 +86,20 @@ export default function BmrCalculator() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          This uses the Mifflin-St Jeor equation, generally considered the most accurate BMR formula for
+          most people: for men, BMR = 10 × weight(kg) + 6.25 × height(cm) − 5 × age + 5; for women, the
+          same calculation minus 161. It estimates the calories your body burns just staying alive —
+          breathing, circulating blood, keeping you warm — before any movement is counted.
+        </p>
+        <p>
+          The activity breakdown multiplies your BMR by a factor for how much you move day-to-day, giving
+          your Total Daily Energy Expenditure (TDEE) at each level — a more useful number if you&apos;re
+          planning calorie intake for weight loss, maintenance or gain.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

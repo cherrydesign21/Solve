@@ -11,6 +11,7 @@ import { ResultCard } from "@/components/ui/ResultCard";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { useCurrency } from "@/lib/currency-context";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { calculateRentVsBuy } from "./logic";
@@ -229,6 +230,21 @@ export default function RentVsBuyCalculator() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          This runs a month-by-month simulation rather than a single formula: each month it pays down the
+          mortgage (tracking the shrinking loan balance and growing home equity) on one side, and grows an
+          investment portfolio seeded by the down payment plus whatever the renter saves versus the EMI on
+          the other. The home also appreciates yearly at your assumed rate.
+        </p>
+        <p>
+          The breakeven point is the year the &quot;net cost&quot; of buying (cash spent minus equity built)
+          drops below the net cost of renting (rent paid minus investment growth). Small changes to the
+          investment return or home appreciation assumptions can shift that breakeven by years, so it&apos;s
+          worth testing a few scenarios rather than trusting one set of numbers.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

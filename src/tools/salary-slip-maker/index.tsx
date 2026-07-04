@@ -10,6 +10,7 @@ import { TextField } from "@/components/ui/TextField";
 import { NumberField } from "@/components/ui/NumberField";
 import { SelectField } from "@/components/ui/SelectField";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { CURRENCIES } from "@/lib/currency-context";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { defaultSalarySlipData, symbolFor } from "./logic";
@@ -279,6 +280,19 @@ export default function SalarySlipMaker() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          Fill in company and employee details, earnings, deductions and leave balances on the left, and
+          watch the payslip update live on the right. Net pay is simply total earnings minus total
+          deductions — everything else here is formatting and layout.
+        </p>
+        <p>
+          Export renders the preview exactly as shown to an image or PDF entirely in your browser, so your
+          salary details are never sent to a server. Use the currency selector on this page (not the site-wide
+          one) since a payslip needs to stay in one fixed currency regardless of who&apos;s viewing it.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

@@ -11,6 +11,7 @@ import { DonutChart, DonutLegend } from "@/components/ui/DonutChart";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { Card } from "@/components/ui/Card";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { useCurrency } from "@/lib/currency-context";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { calculateRd } from "./logic";
@@ -102,6 +103,19 @@ export default function RdCalculator() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          A Recurring Deposit compounds quarterly like a fixed deposit, but each monthly instalment starts
+          earning interest from the date it&apos;s deposited rather than all at once — so the first
+          instalment earns interest for the full tenure while the last one earns very little.
+        </p>
+        <p>
+          RDs are popular for building a savings habit toward a specific goal, since they lock in today&apos;s
+          interest rate while letting you contribute gradually instead of needing a lump sum upfront like
+          an FD.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

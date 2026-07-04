@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/Card";
 import { TextField } from "@/components/ui/TextField";
 import { ResultCard } from "@/components/ui/ResultCard";
 import { VerticalAdSlot } from "@/components/ui/AdSlot";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { formatNumber } from "@/lib/format";
 import { getToolBySlug } from "@/lib/tools-registry";
 import { calculateAge, toDateInputValue } from "./logic";
@@ -78,6 +79,19 @@ export default function AgeCalculator() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          Age is calculated as a true calendar difference between two dates, not just a division of days by
+          365 — it counts whole years, then whole months within the partial year, then whole days within
+          the partial month, the same way you&apos;d count it on a calendar by hand.
+        </p>
+        <p>
+          Change &quot;Age As Of&quot; to any date to answer questions like &quot;how old will I be on my
+          wedding day&quot; or &quot;how old was I when this photo was taken&quot; — it doesn&apos;t have to
+          be today.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }

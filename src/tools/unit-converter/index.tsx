@@ -8,6 +8,7 @@ import { ToolHeader } from "@/components/ui/ToolHeader";
 import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
 import { toolBackdrops } from "@/lib/tool-backdrops";
 import { Card } from "@/components/ui/Card";
+import { ToolExplainer } from "@/components/ui/ToolExplainer";
 import { SelectField } from "@/components/ui/SelectField";
 import { NumberField } from "@/components/ui/NumberField";
 import { getToolBySlug } from "@/lib/tools-registry";
@@ -119,6 +120,19 @@ export default function UnitConverter() {
           </div>
         </div>
       </Card>
+
+      <ToolExplainer>
+        <p>
+          Every unit within a category converts through a fixed base unit — for length, everything routes
+          through metres; for weight, kilograms — so converting kilometres to miles is really two steps
+          under the hood: kilometres to metres, then metres to miles.
+        </p>
+        <p>
+          Both fields are live and editable, so you can type into either side and the other updates
+          instantly — useful for checking a conversion in reverse without hunting for a separate
+          calculator.
+        </p>
+      </ToolExplainer>
     </div>
   );
 }
