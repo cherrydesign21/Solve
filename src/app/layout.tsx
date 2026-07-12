@@ -1,12 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Sora, KoHo } from "next/font/google";
+import { Sora, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { Navigation } from "@/components/layout/Navigation";
-import { GlowBackground } from "@/components/layout/GlowBackground";
-import { PageTransition } from "@/components/layout/PageTransition";
-import { Footer } from "@/components/layout/Footer";
+import { AppShell } from "@/components/layout/AppShell";
 import { CurrencyProvider } from "@/lib/currency-context";
-import { HorizontalAdSlot } from "@/components/ui/AdSlot";
+import { AdSettingsProvider } from "@/lib/adsense-context";
+import { getAdsenseSettings } from "@/lib/settings";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 
 const sora = Sora({
@@ -15,8 +13,14 @@ const sora = Sora({
   weight: ["300", "400", "500", "600", "700"],
 });
 
-const koho = KoHo({
-  variable: "--font-koho",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const jetBrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
@@ -71,28 +75,34 @@ const websiteJsonLd = {
   description: SITE_DESCRIPTION,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const adsenseSettings = await getAdsenseSettings();
+
   return (
-    <html lang="en" className={`${sora.variable} ${koho.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${sora.variable} ${spaceGrotesk.variable} ${jetBrainsMono.variable} h-full antialiased`}
+    >
+      <head>
+        {adsenseSettings.enabled && adsenseSettings.publisherId && (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseSettings.publisherId}`}
+            crossOrigin="anonymous"
+          />
+        )}
+      </head>
       <body className="min-h-full bg-bg font-sans text-white">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
-        <CurrencyProvider>
-          <div className="relative flex min-h-screen w-full flex-col lg:flex-row">
-            <GlowBackground />
-            <Navigation />
-            <main className="relative z-10 min-w-0 flex-1">
-              <div className="mx-auto w-full max-w-[1400px] px-4 py-6 sm:px-8 sm:py-10 lg:px-12 lg:py-12">
-                <PageTransition>{children}</PageTransition>
-                <HorizontalAdSlot className="mt-10" />
-                <Footer />
-              </div>
-            </main>
-          </div>
-        </CurrencyProvider>
+        <AdSettingsProvider value={adsenseSettings}>
+          <CurrencyProvider>
+            <AppShell>{children}</AppShell>
+          </CurrencyProvider>
+        </AdSettingsProvider>
       </body>
     </html>
   );

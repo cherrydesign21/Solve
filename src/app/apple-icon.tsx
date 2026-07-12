@@ -13,23 +13,18 @@ export default function AppleIcon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#000000",
+          backgroundColor: "#0b0c0a",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", fontSize: 64, fontWeight: 700, color: "#ffffff" }}>
-          <span>S</span>
-          <span
-            style={{
-              display: "flex",
-              width: 16,
-              height: 16,
-              borderRadius: "50%",
-              backgroundColor: "#d9ff00",
-              margin: "0 3px",
-            }}
-          />
-          <span>lve</span>
-        </div>
+        <div
+          style={{
+            display: "flex",
+            width: 94,
+            height: 94,
+            borderRadius: "50%",
+            border: "24px solid #d9ff00",
+          }}
+        />
       </div>
     ),
     size

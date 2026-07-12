@@ -64,7 +64,7 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
                 !isEmpty && "hover:bg-white/[0.04]"
               )}
             >
-              <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-white/30">
+              <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-white/30">
                 {category}
               </span>
               {isEmpty ? (

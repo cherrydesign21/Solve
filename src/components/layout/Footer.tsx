@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "./Logo";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -7,11 +8,7 @@ export function Footer() {
     <footer className="mt-10 border-t border-white/10 pt-8 pb-6">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
         <div className="max-w-sm">
-          <p className="flex items-center gap-[3px] font-display text-lg font-medium tracking-wide text-white">
-            <span>S</span>
-            <span className="inline-block h-[0.45em] w-[0.45em] rounded-full bg-accent" />
-            <span>lve</span>
-          </p>
+          <Logo className="text-lg" />
           <p className="mt-2 text-sm text-white/50">
             Solve is a free collection of everyday calculators and converters — fast, mobile-friendly tools
             that update instantly, with no sign-up required.
@@ -34,7 +31,7 @@ export function Footer() {
         </nav>
       </div>
 
-      <p className="mt-6 text-xs text-white/30">© {year} Solve. All rights reserved.</p>
+      <p className="mt-6 font-mono text-xs text-white/30">© {year} Solve. All rights reserved.</p>
     </footer>
   );
 }

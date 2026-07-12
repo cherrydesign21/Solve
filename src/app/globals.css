@@ -7,7 +7,8 @@
   --color-accent: #d9ff00;
   --color-accent-dim: #363d0a;
   --font-sans: var(--font-sora);
-  --font-display: var(--font-koho);
+  --font-display: var(--font-space-grotesk);
+  --font-mono: var(--font-jetbrains-mono);
   --animate-fade-in: fade-in 0.5s ease both;
   --animate-rise: rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 

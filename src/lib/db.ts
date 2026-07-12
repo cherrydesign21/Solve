@@ -44,6 +44,72 @@ export function ensureBirthdaysTable(): Promise<void> {
   return tableReady;
 }
 
+let contactTableReady: Promise<void> | null = null;
+
+export function ensureContactMessagesTable(): Promise<void> {
+  if (!contactTableReady) {
+    const sql = getSql();
+    contactTableReady = sql`
+      CREATE TABLE IF NOT EXISTS contact_messages (
+        id TEXT PRIMARY KEY,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        message TEXT NOT NULL,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+      )
+    `
+      .then(() => undefined)
+      .catch((error) => {
+        contactTableReady = null;
+        throw error;
+      });
+  }
+  return contactTableReady;
+}
+
+let settingsTableReady: Promise<void> | null = null;
+
+export function ensureSettingsTable(): Promise<void> {
+  if (!settingsTableReady) {
+    const sql = getSql();
+    settingsTableReady = sql`
+      CREATE TABLE IF NOT EXISTS app_settings (
+        key TEXT PRIMARY KEY,
+        value TEXT NOT NULL
+      )
+    `
+      .then(() => undefined)
+      .catch((error) => {
+        settingsTableReady = null;
+        throw error;
+      });
+  }
+  return settingsTableReady;
+}
+
+let pageViewsTableReady: Promise<void> | null = null;
+
+export function ensurePageViewsTable(): Promise<void> {
+  if (!pageViewsTableReady) {
+    const sql = getSql();
+    pageViewsTableReady = sql`
+      CREATE TABLE IF NOT EXISTS page_views (
+        id BIGSERIAL PRIMARY KEY,
+        path TEXT NOT NULL,
+        referrer TEXT,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+      )
+    `
+      .then(() => undefined)
+      .catch((error) => {
+        pageViewsTableReady = null;
+        throw error;
+      });
+  }
+  return pageViewsTableReady;
+}
+
 export function dbErrorMessage(error: unknown): string {
   if (error instanceof MissingConfigError) {
     // Log the real cause server-side only — never surface env var names to the client.
