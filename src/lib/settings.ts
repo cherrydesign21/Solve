@@ -33,21 +33,32 @@ interface SettingRow {
 let cache: { value: AdsenseSettings; expiresAt: number } | null = null;
 const CACHE_TTL_MS = 30_000;
 
+async function fetchAdsenseSettings(): Promise<AdsenseSettings> {
+  await ensureSettingsTable();
+  const sql = getSql();
+  const rows = (await sql`
+    SELECT key, value FROM app_settings WHERE key = ANY(${Object.values(ADSENSE_KEYS)})
+  `) as SettingRow[];
+  const map = new Map(rows.map((r) => [r.key, r.value]));
+  return {
+    enabled: map.get(ADSENSE_KEYS.enabled) === "true",
+    publisherId: map.get(ADSENSE_KEYS.publisherId) ?? "",
+    horizontalSlotId: map.get(ADSENSE_KEYS.horizontalSlotId) ?? "",
+    verticalSlotId: map.get(ADSENSE_KEYS.verticalSlotId) ?? "",
+  };
+}
+
 export async function getAdsenseSettings(): Promise<AdsenseSettings> {
   if (cache && cache.expiresAt > Date.now()) return cache.value;
   try {
-    await ensureSettingsTable();
-    const sql = getSql();
-    const rows = (await sql`
-      SELECT key, value FROM app_settings WHERE key = ANY(${Object.values(ADSENSE_KEYS)})
-    `) as SettingRow[];
-    const map = new Map(rows.map((r) => [r.key, r.value]));
-    const value: AdsenseSettings = {
-      enabled: map.get(ADSENSE_KEYS.enabled) === "true",
-      publisherId: map.get(ADSENSE_KEYS.publisherId) ?? "",
-      horizontalSlotId: map.get(ADSENSE_KEYS.horizontalSlotId) ?? "",
-      verticalSlotId: map.get(ADSENSE_KEYS.verticalSlotId) ?? "",
-    };
+    // This runs unconditionally in the root layout on every page — a purely
+    // cosmetic lookup (whether to inject an ad script) must never be allowed
+    // to hold up the entire site, so it gets its own short, hard deadline on
+    // top of the connection's statement_timeout.
+    const value = await Promise.race([
+      fetchAdsenseSettings(),
+      new Promise<AdsenseSettings>((resolve) => setTimeout(() => resolve(DEFAULT_ADSENSE_SETTINGS), 3000)),
+    ]);
     cache = { value, expiresAt: Date.now() + CACHE_TTL_MS };
     return value;
   } catch (error) {

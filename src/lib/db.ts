@@ -16,6 +16,12 @@ export function getSql(): postgres.Sql {
     ssl: "require",
     prepare: false, // required for Supabase's pgbouncer transaction-mode pooler
     max: 1, // one connection per serverless instance; the pooler handles fan-out
+    connect_timeout: 10, // seconds
+    // Without this, a stalled query (e.g. a paused Supabase project waking up)
+    // can hang until Vercel's own function-duration ceiling kills the whole
+    // invocation minutes later — this makes Postgres itself cancel the query
+    // after 10s so callers get a fast, clear error instead.
+    connection: { statement_timeout: 10_000 },
   });
   return client;
 }
