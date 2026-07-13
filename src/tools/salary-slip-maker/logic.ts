@@ -34,8 +34,11 @@ export function formatDate(iso: string): string {
   return date.toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" });
 }
 
-const today = new Date();
-
+// payPeriod/dateOfIssue intentionally start blank rather than from `new Date()`
+// here — this file is evaluated both at (static) build time on the server and
+// again on the client during hydration, and those two "now"s can land on
+// different calendar days, which produces a text-content hydration mismatch.
+// The tool seeds both from the visitor's own clock in a useEffect instead.
 export const defaultSalarySlipData: SalarySlipData = {
   companyName: "Acme Technologies Pvt. Ltd.",
   companyAddress: "4th Floor, Skyline Tower, MG Road, Bengaluru, Karnataka 560001",
@@ -45,8 +48,8 @@ export const defaultSalarySlipData: SalarySlipData = {
   employeeId: "EMP-1024",
   designation: "Software Engineer",
   department: "Engineering",
-  payPeriod: `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}`,
-  dateOfIssue: today.toISOString().slice(0, 10),
+  payPeriod: "",
+  dateOfIssue: "",
   bankAccount: "XXXXXXXX4321",
   panNumber: "ABCDE1234F",
 

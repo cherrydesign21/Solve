@@ -1,6 +1,6 @@
 "use client";
 
-import { cloneElement, isValidElement, useId, useRef, useState, type ReactElement, type ReactNode } from "react";
+import { cloneElement, isValidElement, useEffect, useId, useRef, useState, type ReactElement, type ReactNode } from "react";
 import { FileImage, FileText, ImagePlus, X } from "lucide-react";
 import { ToolHeader } from "@/components/ui/ToolHeader";
 import { ToolBackdrop } from "@/components/layout/ToolBackdrop";
@@ -50,6 +50,16 @@ export default function SalarySlipMaker() {
   const update = <K extends keyof SalarySlipData>(key: K, value: SalarySlipData[K]) => {
     setData((prev) => ({ ...prev, [key]: value }));
   };
+
+  useEffect(() => {
+    // Client-only: seed today's date from the visitor's local clock to avoid
+    // an SSR/client hydration mismatch (see defaultSalarySlipData).
+    const today = new Date();
+    const payPeriod = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}`;
+    const dateOfIssue = today.toISOString().slice(0, 10);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setData((prev) => ({ ...prev, payPeriod, dateOfIssue }));
+  }, []);
 
   const handleLogoFile = (file: File | undefined) => {
     if (!file) return;

@@ -36,9 +36,23 @@ export default function PrivacyPolicyPage() {
             the Birthday Reminder page.
           </Paragraph>
           <Paragraph>
+            <strong className="text-white">Contact form.</strong> If you send us a message via the{" "}
+            <Link href="/contact" className="text-accent underline underline-offset-2">
+              Contact page
+            </Link>
+            , we store your name, email address and message so we can reply, and email that submission to our
+            team. We use it only to respond to you — never for marketing or shared with third parties.
+          </Paragraph>
+          <Paragraph>
             <strong className="text-white">Local preferences.</strong> We store your selected display currency
             in your browser&apos;s local storage so it&apos;s remembered on your next visit. This stays on your device
             and is not sent to our servers.
+          </Paragraph>
+          <Paragraph>
+            <strong className="text-white">Basic page-view analytics.</strong> We record the page path,
+            referring page and timestamp of each page you visit, so we can see which tools are popular and
+            keep the site running well. This does not use cookies and does not store your IP address or any
+            other identifying information alongside it.
           </Paragraph>
           <Paragraph>
             <strong className="text-white">Automatically collected data.</strong> Like most websites, our
@@ -63,8 +77,7 @@ export default function PrivacyPolicyPage() {
           >
             policies.google.com/technologies/ads
           </a>
-          . We do not currently run our own analytics or tracking scripts; if that changes, we&apos;ll update this
-          policy.
+          .
         </Paragraph>
       </div>
 
@@ -75,8 +88,8 @@ export default function PrivacyPolicyPage() {
           <BulletList
             items={[
               "Vercel — hosting and serverless infrastructure.",
-              "Supabase (Postgres) — stores Birthday Reminder entries.",
-              "Resend — delivers birthday reminder emails.",
+              "Supabase (Postgres) — stores Birthday Reminder entries, contact form messages, and basic page-view analytics.",
+              "Resend — delivers birthday reminder emails and contact form notifications.",
               "exchangerate-api.com — supplies currency conversion rates (no personal data is sent to this service).",
               "Google AdSense — serves advertisements shown on this site.",
             ]}
