@@ -6,6 +6,7 @@ import { CurrencyProvider } from "@/lib/currency-context";
 import { AdSettingsProvider } from "@/lib/adsense-context";
 import { getAdsenseSettings } from "@/lib/settings";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
+import { Analytics } from "@vercel/analytics/next";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -103,6 +104,7 @@ export default async function RootLayout({
             <AppShell>{children}</AppShell>
           </CurrencyProvider>
         </AdSettingsProvider>
+        <Analytics />
       </body>
     </html>
   );
