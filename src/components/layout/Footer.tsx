@@ -8,7 +8,7 @@ export function Footer() {
     <footer className="mt-10 border-t border-white/10 pt-8 pb-6">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
         <div className="max-w-sm">
-          <Logo className="text-lg" />
+          <Logo className="h-5" />
           <p className="mt-2 text-sm text-white/50">
             DailySolve is a free collection of everyday calculators and converters — fast, mobile-friendly tools
             that update instantly, with no sign-up required.
