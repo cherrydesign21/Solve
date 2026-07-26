@@ -9,6 +9,7 @@ import clsx from "clsx";
 import { getToolBySlug, getToolsByCategory, type ToolCategory } from "@/lib/tools-registry";
 import { Logo } from "./Logo";
 import { CurrencySelector } from "./CurrencySelector";
+import { ProductHuntBadge } from "./ProductHuntBadge";
 
 function useActiveCategory(): ToolCategory | null {
   const pathname = usePathname();
@@ -26,7 +27,7 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
   const activeCategory = useActiveCategory();
 
   const [expanded, setExpanded] = useState<Set<ToolCategory>>(
-    () => new Set(activeCategory ? [activeCategory] : [])
+    () => new Set([activeCategory ?? groups[0]?.category].filter((c): c is ToolCategory => c != null))
   );
   const [lastActiveCategory, setLastActiveCategory] = useState(activeCategory);
 
@@ -164,6 +165,9 @@ export function Navigation() {
         )}
         <div className="flex-1 overflow-y-auto px-4 pb-8">
           <NavList />
+        </div>
+        <div className="border-t border-white/10 px-6 py-4">
+          <ProductHuntBadge />
         </div>
       </aside>
 

@@ -108,7 +108,7 @@ export default async function RootLayout({
           />
         )}
       </head>
-      <body className="min-h-full bg-bg font-sans text-white">
+      <body className="min-h-full overflow-x-hidden bg-bg font-sans text-white">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
         <AdSettingsProvider value={adsenseSettings}>
           <CurrencyProvider>
