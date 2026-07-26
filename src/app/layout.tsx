@@ -35,6 +35,18 @@ export const metadata: Metadata = {
     template: "%s · DailySolve",
   },
   description: SITE_DESCRIPTION,
+  keywords: [
+    "calculator",
+    "converter",
+    "EMI calculator",
+    "SIP calculator",
+    "tax calculator",
+    "unit converter",
+    "currency converter",
+    "BMI calculator",
+    "free online calculator",
+    "DailySolve",
+  ],
   alternates: { canonical: "/" },
   robots: {
     index: true,
