@@ -18,7 +18,7 @@ import { levelOptions, qrFilename, type QrLevel } from "./logic";
 
 export default function QrCodeGenerator() {
   const tool = getToolBySlug("qr-code-generator")!;
-  const [value, setValue] = useState("https://solve-lac.vercel.app");
+  const [value, setValue] = useState("https://dailysolve.app");
   const [size, setSize] = useState(240);
   const [level, setLevel] = useState<QrLevel>("M");
   const [fgColor, setFgColor] = useState("#000000");
