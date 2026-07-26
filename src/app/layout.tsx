@@ -31,8 +31,8 @@ const SITE_DESCRIPTION =
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Solve — Everyday Calculators & Converters",
-    template: "%s · Solve",
+    default: "DailySolve — Everyday Calculators & Converters",
+    template: "%s · DailySolve",
   },
   description: SITE_DESCRIPTION,
   alternates: { canonical: "/" },
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Solve — Everyday Calculators & Converters",
+    title: "DailySolve — Everyday Calculators & Converters",
     description: SITE_DESCRIPTION,
     url: SITE_URL,
     siteName: SITE_NAME,
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Solve — Everyday Calculators & Converters",
+    title: "DailySolve — Everyday Calculators & Converters",
     description: SITE_DESCRIPTION,
     images: [`${SITE_URL}/twitter-image`],
   },

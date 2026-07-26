@@ -5,7 +5,7 @@ import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
   title: "Privacy Policy",
-  description: "How Solve collects, uses and protects your information.",
+  description: "How DailySolve collects, uses and protects your information.",
   path: "/privacy-policy",
 });
 
@@ -13,8 +13,8 @@ export default function PrivacyPolicyPage() {
   return (
     <StaticPage title="Privacy Policy" updated="July 2026">
       <Paragraph>
-        This Privacy Policy explains what information Solve (&ldquo;we&rdquo;, &ldquo;us&rdquo;) collects when you use this website,
-        how we use it, and the choices you have. Solve is a free collection of calculators and converters —
+        This Privacy Policy explains what information DailySolve (&ldquo;we&rdquo;, &ldquo;us&rdquo;) collects when you use this website,
+        how we use it, and the choices you have. DailySolve is a free collection of calculators and converters —
         most tools run entirely in your browser and never send your inputs anywhere.
       </Paragraph>
 
@@ -65,7 +65,7 @@ export default function PrivacyPolicyPage() {
       <div>
         <SectionHeading>Cookies and advertising</SectionHeading>
         <Paragraph>
-          Solve displays advertisements served by Google AdSense and its partners. Google and its partners may
+          DailySolve displays advertisements served by Google AdSense and its partners. Google and its partners may
           use cookies or similar technologies to serve ads based on your prior visits to this or other
           websites. You can learn more about how Google uses this data, and opt out of personalized
           advertising, at{" "}
@@ -83,7 +83,7 @@ export default function PrivacyPolicyPage() {
 
       <div>
         <SectionHeading>Third-party service providers</SectionHeading>
-        <Paragraph>We rely on a small number of trusted providers to run Solve:</Paragraph>
+        <Paragraph>We rely on a small number of trusted providers to run DailySolve:</Paragraph>
         <div className="mt-3">
           <BulletList
             items={[
@@ -113,7 +113,7 @@ export default function PrivacyPolicyPage() {
       <div>
         <SectionHeading>Children&apos;s privacy</SectionHeading>
         <Paragraph>
-          Solve is not directed at children under 13, and we do not knowingly collect personal information
+          DailySolve is not directed at children under 13, and we do not knowingly collect personal information
           from children.
         </Paragraph>
       </div>

@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Solve — Everyday Calculators & Converters",
-    short_name: "Solve",
+    name: "DailySolve — Everyday Calculators & Converters",
+    short_name: "DailySolve",
     description:
       "A fast, mobile-friendly collection of everyday calculators and converters: EMI, SIP, tax, currency, units, solar sizing and more.",
     start_url: "/",

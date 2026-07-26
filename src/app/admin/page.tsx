@@ -37,7 +37,7 @@ export default async function AdminOverviewPage() {
     <div className="flex flex-col gap-8">
       <div>
         <h1 className="text-2xl font-semibold text-white">Overview</h1>
-        <p className="mt-1 text-sm text-white/50">A snapshot of everything happening on Solve.</p>
+        <p className="mt-1 text-sm text-white/50">A snapshot of everything happening on DailySolve.</p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">

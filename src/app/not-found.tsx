@@ -20,7 +20,7 @@ export default function NotFound() {
         href="/"
         className="rounded-md bg-accent px-6 py-3 text-sm font-semibold uppercase tracking-wide text-black transition-opacity hover:opacity-90"
       >
-        Back to Solve
+        Back to DailySolve
       </Link>
     </div>
   );

@@ -5,7 +5,7 @@ import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
   title: "Terms of Use",
-  description: "The terms that govern your use of Solve.",
+  description: "The terms that govern your use of DailySolve.",
   path: "/terms",
 });
 
@@ -13,13 +13,13 @@ export default function TermsPage() {
   return (
     <StaticPage title="Terms of Use" updated="July 2026">
       <Paragraph>
-        By using Solve, you agree to these terms. If you don&apos;t agree, please don&apos;t use the site.
+        By using DailySolve, you agree to these terms. If you don&apos;t agree, please don&apos;t use the site.
       </Paragraph>
 
       <div>
         <SectionHeading>About the service</SectionHeading>
         <Paragraph>
-          Solve provides free calculators and converters (EMI, SIP, tax, currency, unit conversion, and more)
+          DailySolve provides free calculators and converters (EMI, SIP, tax, currency, unit conversion, and more)
           for general informational purposes only. Results are estimates based on the inputs you provide and
           the formulas we use — they are not professional financial, tax, medical, legal, or real-estate
           advice, and shouldn&apos;t be relied on as the sole basis for any decision. Always consult a
@@ -30,7 +30,7 @@ export default function TermsPage() {
       <div>
         <SectionHeading>No warranty</SectionHeading>
         <Paragraph>
-          Solve is provided &ldquo;as is&rdquo; and &ldquo;as available,&rdquo; without warranties of any kind,
+          DailySolve is provided &ldquo;as is&rdquo; and &ldquo;as available,&rdquo; without warranties of any kind,
           express or implied. We don&apos;t guarantee that calculations will always be accurate, that the site
           will be uninterrupted or error-free, or that it will meet your specific requirements.
         </Paragraph>
@@ -39,7 +39,7 @@ export default function TermsPage() {
       <div>
         <SectionHeading>Limitation of liability</SectionHeading>
         <Paragraph>
-          To the fullest extent permitted by law, Solve and its operators are not liable for any indirect,
+          To the fullest extent permitted by law, DailySolve and its operators are not liable for any indirect,
           incidental, or consequential damages arising from your use of, or inability to use, this site or any
           calculation results it produces.
         </Paragraph>
@@ -65,7 +65,7 @@ export default function TermsPage() {
       <div>
         <SectionHeading>Intellectual property</SectionHeading>
         <Paragraph>
-          The Solve name, design, and underlying code are owned by Solve unless otherwise noted.
+          The DailySolve name, design, and underlying code are owned by DailySolve unless otherwise noted.
           You&apos;re welcome to use the tools for personal or business purposes, but you may not copy,
           resell, or republish the site itself without permission.
         </Paragraph>

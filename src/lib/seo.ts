@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const SITE_URL = "https://dailysolve.app";
-export const SITE_NAME = "Solve";
+export const SITE_NAME = "DailySolve";
 
 interface BuildMetadataInput {
   title: string;

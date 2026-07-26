@@ -5,22 +5,22 @@ import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
   title: "About",
-  description: "What Solve is, and why it exists.",
+  description: "What DailySolve is, and why it exists.",
   path: "/about",
 });
 
 export default function AboutPage() {
   return (
-    <StaticPage title="About Solve">
+    <StaticPage title="About DailySolve">
       <Paragraph>
-        Solve is a free collection of everyday calculators and converters — built to be fast,
+        DailySolve is a free collection of everyday calculators and converters — built to be fast,
         mobile-friendly, and refreshingly simple. No sign-ups, no clutter: pick a tool, enter your
         numbers, and watch the result update instantly as you type or drag.
       </Paragraph>
 
       <div>
         <SectionHeading>What you&apos;ll find here</SectionHeading>
-        <Paragraph>Solve currently covers 30+ tools across seven categories:</Paragraph>
+        <Paragraph>DailySolve currently covers 30+ tools across seven categories:</Paragraph>
         <div className="mt-3">
           <BulletList
             items={[
@@ -54,7 +54,7 @@ export default function AboutPage() {
         <SectionHeading>Why we built it</SectionHeading>
         <Paragraph>
           Most calculator sites online are slow, cluttered with pop-ups, or hide the result behind a
-          &ldquo;Calculate&rdquo; button. Solve is the opposite: a dark, distraction-free interface
+          &ldquo;Calculate&rdquo; button. DailySolve is the opposite: a dark, distraction-free interface
           where every value updates live, on any device.
         </Paragraph>
       </div>

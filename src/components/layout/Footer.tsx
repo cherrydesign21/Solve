@@ -10,7 +10,7 @@ export function Footer() {
         <div className="max-w-sm">
           <Logo className="text-lg" />
           <p className="mt-2 text-sm text-white/50">
-            Solve is a free collection of everyday calculators and converters — fast, mobile-friendly tools
+            DailySolve is a free collection of everyday calculators and converters — fast, mobile-friendly tools
             that update instantly, with no sign-up required.
           </p>
         </div>
@@ -31,7 +31,7 @@ export function Footer() {
         </nav>
       </div>
 
-      <p className="mt-6 font-mono text-xs text-white/30">© {year} Solve. All rights reserved.</p>
+      <p className="mt-6 font-mono text-xs text-white/30">© {year} DailySolve. All rights reserved.</p>
     </footer>
   );
 }
