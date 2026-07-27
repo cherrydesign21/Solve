@@ -37,7 +37,7 @@ async function fetchAdsenseSettings(): Promise<AdsenseSettings> {
   await ensureSettingsTable();
   const sql = getSql();
   const rows = (await sql`
-    SELECT key, value FROM app_settings WHERE key = ANY(${Object.values(ADSENSE_KEYS)})
+    SELECT key, value FROM app_settings WHERE key IN ${sql(Object.values(ADSENSE_KEYS))}
   `) as SettingRow[];
   const map = new Map(rows.map((r) => [r.key, r.value]));
   return {
