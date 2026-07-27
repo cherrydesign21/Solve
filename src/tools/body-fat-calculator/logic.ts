@@ -21,7 +21,7 @@ export const bodyFatZonesMale: GaugeZone[] = [
   { label: "Athletic", color: "#4ade80", upTo: 13 },
   { label: "Fitness", color: "#d9ff00", upTo: 17 },
   { label: "Average", color: "#fb923c", upTo: 24 },
-  { label: "Obese", color: "#f87171", upTo: 40 },
+  { label: "Obese", color: "#f87171", upTo: 45 },
 ];
 
 export const bodyFatZonesFemale: GaugeZone[] = [
