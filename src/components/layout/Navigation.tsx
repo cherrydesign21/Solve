@@ -4,12 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, Search, X } from "lucide-react";
 import clsx from "clsx";
 import { getToolBySlug, getToolsByCategory, type ToolCategory } from "@/lib/tools-registry";
 import { Logo } from "./Logo";
 import { CurrencySelector } from "./CurrencySelector";
 import { ProductHuntBadge } from "./ProductHuntBadge";
+import { SearchTrigger } from "./SearchTrigger";
+import { SearchModal } from "./SearchModal";
 
 function useActiveCategory(): ToolCategory | null {
   const pathname = usePathname();
@@ -136,6 +138,7 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
 
 export function Navigation() {
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const pathname = usePathname();
   const [lastPathname, setLastPathname] = useState(pathname);
   const showCurrencySelector = useShowCurrencySelector();
@@ -152,11 +155,26 @@ export function Navigation() {
     };
   }, [open]);
 
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setOpen(false);
+        setSearchOpen(true);
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
     <>
       <aside className="sticky top-0 hidden h-screen w-[280px] shrink-0 border-r border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent lg:flex lg:flex-col">
         <div className="flex items-center px-8 py-8">
           <Logo />
+        </div>
+        <div className="px-6 pb-6">
+          <SearchTrigger onClick={() => setSearchOpen(true)} />
         </div>
         {showCurrencySelector && (
           <div className="px-6 pb-6">
@@ -173,14 +191,24 @@ export function Navigation() {
 
       <header className="sticky top-0 z-40 flex items-center justify-between border-b border-white/10 bg-bg/80 px-4 py-4 backdrop-blur-md lg:hidden">
         <Logo />
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          aria-label="Open navigation"
-          className="flex h-10 w-10 items-center justify-center rounded-md border border-white/10 bg-white/5 text-white"
-        >
-          <Menu className="h-5 w-5" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setSearchOpen(true)}
+            aria-label="Search tools"
+            className="flex h-10 w-10 items-center justify-center rounded-md border border-white/10 bg-white/5 text-white"
+          >
+            <Search className="h-4 w-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            aria-label="Open navigation"
+            className="flex h-10 w-10 items-center justify-center rounded-md border border-white/10 bg-white/5 text-white"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        </div>
       </header>
 
       <AnimatePresence>
@@ -213,6 +241,14 @@ export function Navigation() {
                   <X className="h-4 w-4" />
                 </button>
               </div>
+              <div className="px-4 pb-6">
+                <SearchTrigger
+                  onClick={() => {
+                    setOpen(false);
+                    setSearchOpen(true);
+                  }}
+                />
+              </div>
               {showCurrencySelector && (
                 <div className="px-4 pb-6">
                   <CurrencySelector />
@@ -223,6 +259,8 @@ export function Navigation() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );
 }
