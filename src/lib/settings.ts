@@ -48,6 +48,8 @@ async function fetchAdsenseSettings(): Promise<AdsenseSettings> {
   };
 }
 
+const TIMEOUT = Symbol("timeout");
+
 export async function getAdsenseSettings(): Promise<AdsenseSettings> {
   if (cache && cache.expiresAt > Date.now()) return cache.value;
   try {
@@ -55,12 +57,19 @@ export async function getAdsenseSettings(): Promise<AdsenseSettings> {
     // cosmetic lookup (whether to inject an ad script) must never be allowed
     // to hold up the entire site, so it gets its own short, hard deadline on
     // top of the connection's statement_timeout.
-    const value = await Promise.race([
+    const result = await Promise.race([
       fetchAdsenseSettings(),
-      new Promise<AdsenseSettings>((resolve) => setTimeout(() => resolve(DEFAULT_ADSENSE_SETTINGS), 3000)),
+      new Promise<typeof TIMEOUT>((resolve) => setTimeout(() => resolve(TIMEOUT), 4000)),
     ]);
-    cache = { value, expiresAt: Date.now() + CACHE_TTL_MS };
-    return value;
+    if (result === TIMEOUT) {
+      // Don't cache a timeout fallback — a single slow read (e.g. a cold
+      // Supabase connection) would otherwise "poison" every request for the
+      // next 30s with a false "disabled" reading. Let the next request try
+      // the database fresh instead.
+      return DEFAULT_ADSENSE_SETTINGS;
+    }
+    cache = { value: result, expiresAt: Date.now() + CACHE_TTL_MS };
+    return result;
   } catch (error) {
     if (!(error instanceof MissingConfigError)) console.error("[settings] failed to load AdSense settings:", error);
     return DEFAULT_ADSENSE_SETTINGS;
