@@ -8,15 +8,20 @@ const inputClass =
 
 async function updateAdsenseSettings(formData: FormData) {
   "use server";
+  console.log("[adsense-action] start", Date.now());
   await requireAdminPage();
+  console.log("[adsense-action] after requireAdminPage", Date.now());
   await saveAdsenseSettings({
     enabled: formData.get("enabled") === "on",
     publisherId: String(formData.get("publisherId") ?? ""),
     horizontalSlotId: String(formData.get("horizontalSlotId") ?? ""),
     verticalSlotId: String(formData.get("verticalSlotId") ?? ""),
   });
+  console.log("[adsense-action] after saveAdsenseSettings", Date.now());
   revalidatePath("/admin/adsense");
-  revalidatePath("/", "layout");
+  console.log("[adsense-action] after revalidatePath admin/adsense", Date.now());
+  // TEMP: revalidatePath("/", "layout") disabled to isolate whether it's the hang source
+  console.log("[adsense-action] done", Date.now());
 }
 
 export default async function AdminAdsensePage() {

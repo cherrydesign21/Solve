@@ -48,6 +48,10 @@ export const metadata: Metadata = {
     "DailySolve",
   ],
   alternates: { canonical: "/" },
+  // Static, hardcoded rather than read from the DB-backed AdSense settings —
+  // this is specifically for Google's site-verification crawl, so it must
+  // never depend on a database round-trip that could fail or time out.
+  other: { "google-adsense-account": "ca-pub-8018807637358062" },
   robots: {
     index: true,
     follow: true,
